@@ -1,0 +1,486 @@
+makePlot:
+  user_name: "user.adanders"
+  version: "v1"
+  BLIND_THRESHOLD: 0.03
+
+  fastframes_input: True
+  sampleslist_path_Run2: "./sampleslist_path_Run2.json" # Only used for fastframes input
+  sampleslist_path_Run3: "./sampleslist_path_Run3.json" # Only used for fastframes input
+
+  input_path_run2: "/eos/atlas/atlascerngroupdisk/phys-higp/TauLep/HHbbll/NTUP_forbbllteam_v05/Run2/"
+  input_path_run3: "/eos/atlas/atlascerngroupdisk/phys-higp/TauLep/HHbbll/NTUP_forbbllteam_v05/Run3/"
+  cutflow_path_run2: "/eos/atlas/atlascerngroupdisk/phys-higp/TauLep/HHbbll/NTUP_forbbllteam_v05/Run2/"
+  cutflow_path_run3: "/eos/atlas/atlascerngroupdisk/phys-higp/TauLep/HHbbll/NTUP_forbbllteam_v05/Run3/"
+
+  output_path: "./plots/"
+
+  # You cannot currently do both the data ttbar reweighting calculation and the reweighting applied simultaneously.
+  # Perform data ttbar reweighting calculation
+  do_ttbar_reweighting_calc: True
+
+  # Path to the file containing the histograms for data ttbar reweighting. If set to False, no reweighting will be applied.
+  ttbar_reweighting_file_Run2: #"./ttbar_reweighting_histograms_Run2.root"
+  ttbar_reweighting_file_Run3: #"./ttbar_reweighting_histograms_Run3.root" 
+
+  # mcEventWeights: "mcEventWeights"
+  # ftag_SF_weight: "ftag_effSF_DL1dv01_FixedCutBEff_77_NOSYS"
+  # jvt_SF_weight: "jvt_effSF_NOSYS"
+  # lep1_SF_weight: "bbll_Lepton1_effSF_NOSYS"
+  # lep2_SF_weight: "bbll_Lepton2_effSF_NOSYS"
+  # AMIXsection: "AMIXsection"
+  # kFactor: "kFactor"
+  # Lumi: "Luminosity"
+  # FilterEff: "FilterEff"
+  # sumOfWeights: "sumOfWeights"
+  # pileUp_weight: "PileupWeight_NOSYS"
+  # weight_factor: [
+  #   "$mcEventWeights$[0]",
+  #   "$ftag_SF_weight$",
+  #   "$jvt_SF_weight$",
+  #   "$lep1_SF_weight$",
+  #   "$lep2_SF_weight$",
+  #   "$pileUp_weight$"
+  # ]
+  # scale_factor: [
+  #   "$Lumi$",
+  #   "$FilterEff$",
+  #   "1/$sumOfWeights$",
+  #   "$AMIXsection$",
+  #   "$kFactor$"
+  # ]
+  #weight_factor: "weight"
+  weight_factor: "weight_total_NOSYS"
+
+  signalName: [
+    "HH (251 GeV)", 
+    "HH (260 GeV)",
+    "HH (300 GeV)", 
+    "HH (400 GeV)", 
+    "HH (500 GeV)", 
+    "HH (600 GeV)", 
+    "HH (800 GeV)", 
+    "HH (1000 GeV)",
+  ]
+  samplesToStack_run2: [
+    "ttbar_dilep",
+    "ttbar_nonallhad",
+    "ttbar_allhad",
+    "Zee+jet_Bfilt",
+    "Zee+jet_CfiltBveto",
+    "Zee+jet_CvetoBveto",
+    "Zmumu+jet_Bfilt",
+    "Zmumu+jet_CfiltBveto",
+    "Zmumu+jet_CvetoBveto",
+    "Ztautau+jet_Bfilt",
+    "Ztautau+jet_CfiltBveto",
+    "Ztautau+jet_CvetoBveto",
+    "Zee+jet_lowmass_Bfilt",
+    "Zee+jet_lowmass_CfiltBveto",
+    "Zee+jet_lowmass_CvetoBveto",
+    "Zmumu+jet_lowmass_Bfilt",
+    "Zmumu+jet_lowmass_CfiltBveto",
+    "Zmumu+jet_lowmass_CvetoBveto",
+    "Zee+jet_Bfilt_light",
+    "Zee+jet_CfiltBveto_light",
+    "Zee+jet_CvetoBveto_light",
+    "Zmumu+jet_Bfilt_light",
+    "Zmumu+jet_CfiltBveto_light",
+    "Zmumu+jet_CvetoBveto_light",
+    "Ztautau+jet_Bfilt_light",
+    "Ztautau+jet_CfiltBveto_light",
+    "Ztautau+jet_CvetoBveto_light",
+    "Zee+jet_lowmass_Bfilt_light",
+    "Zee+jet_lowmass_CfiltBveto_light",
+    "Zee+jet_lowmass_CvetoBveto_light",
+    "Zmumu+jet_lowmass_Bfilt_light",
+    "Zmumu+jet_lowmass_CfiltBveto_light",
+    "Zmumu+jet_lowmass_CvetoBveto_light",
+    "Diboson_ZqqZll",
+    "Diboson_ZbbZll",
+    "Diboson_ZbbZvv",
+    "Diboson_WqqZll",
+    "Diboson_WqqZvv",
+    "Diboson_WlvZqq",
+    "Diboson_WlvZbb",
+    "Diboson_WlvWqq",
+    "Diboson_WW_ewk",
+    "Diboson_ZZ_ewk",
+    "Diboson_4l_0M4l130",
+    "Diboson_4l_130M4l",
+    "Diboson_4l_0M4l130_nohiggs",
+    "Diboson_4l_130M4l_nohiggs",
+    "singletop_schan_top",
+    "singletop_schan_antitop",
+    "singletop_tchan_top",
+    "singletop_tchan_antitop",
+    "singletop_Wt_inc_antitop",
+    "singletop_Wt_inc_top",
+    "singletop_Wt_dil_antitop",
+    "singletop_Wt_dil_top",
+    "ttW",
+    "ggH_tautaul13l7",
+    "ggH_tautaulm15hp20",
+    "ggH_tautaulp15hm20",
+    "ggH_tautauh30h20",
+    "ggH_etau",
+    "ggH_mutau",
+    "ggH_WWlvlv",
+    "VH_WmH_lvbb",
+    "VH_WpH_lvbb",
+    "VH_ZH_llbb",
+    "VH_ZH_vvbb",
+    "ggVH_ZH_llbb",
+    "VH_WpH_WWlvlv",
+    "VH_WmH_WWlvlv",
+    "VH_mWinc_tautau",
+    "VH_pWinc_tautau",
+    "VH_WpH_lvWWlvqq",
+    "VH_WmH_qqWWlvlv",
+    "VH_WmH_lvWWlvqq",
+    "VH_ZH_Zinc_tautau",
+    "VH_ZH_qqWWlvlv",
+    "VH_ZH_ZinclWWlvlv",
+    "ttH_allhad",
+    "ttH_semilep",
+    "ttH_dilep",
+    "H_ZZ_llvv",
+    "VH_ZZ_llvv",
+    "VH_ggZZ_llvv",
+    "Wenu+jet_Bfilt",
+    "Wenu+jet_CFilterBveto",
+    "Wenu+jet_CvetoBveto",
+    "Wmunu+jet_Bfilt",
+    "Wmunu+jet_CFilterBveto",
+    "Wmunu+jet_CvetoBveto",
+    "Wtaunu+jet_Bfilt",
+    "Wtaunu+jet_CFilterBveto",
+    "Wtaunu+jet_CvetoBveto",
+    "bbtt_251",
+    "bbWW_251",
+    "bbZZ_251",
+    "bbtt_260",
+    "bbWW_260",
+    "bbZZ_260",
+    "bbtt_300",
+    "bbWW_300",
+    "bbZZ_300",
+    "bbtt_400",
+    "bbWW_400",
+    "bbZZ_400",
+    "bbtt_500",
+    "bbWW_500",
+    "bbZZ_500",
+    "bbtt_600",
+    "bbWW_600",
+    "bbZZ_600",
+    "bbtt_800",
+    "bbWW_800",
+    "bbZZ_800",
+    "bbtt_1000",
+    "bbWW_1000",
+    "bbZZ_1000",
+    ]
+  samplesToStack_run3: [
+    "ttbar_dilep_fix",
+    "ttbar_singlelep_fix",
+    "ttbar_allhad",
+    "Zee+jet_Bfilt",
+    "Zee+jet_CFilterBveto",
+    "Zee+jet_CvetoBveto_fix",
+    "Zmumu+jet_Bfilt",
+    "Zmumu+jet_CFilterBveto",
+    "Zmumu+jet_CvetoBveto_fix",
+    "Zee+jet_Bfilt_light",
+    "Zee+jet_CFilterBveto_light",
+    "Zee+jet_CvetoBveto_light_fix",
+    "Zmumu+jet_Bfilt_light",
+    "Zmumu+jet_CFilterBveto_light",
+    "Zmumu+jet_CvetoBveto_light_fix",
+    "Ztautau+jet_Bfilt",
+    "Ztautau+jet_CFilterBveto",
+    "Ztautau+jet_CvetoBveto",
+    "Diboson_2lep_os",
+    "Diboson_2lep_ss",
+    "Diboson_3lep",
+    "Diboson_4lep",
+    "Diboson_ZqqZll",
+    "Diboson_ZbbZll",
+    "Diboson_ZbbZvv",
+    "Diboson_WqqZll",
+    "Diboson_WqqZvv",
+    "Diboson_WlvZqq",
+    "Diboson_WlvZbb",
+    "Diboson_WlvWqq",
+    "singletop_tb_lep_antitop",
+    "singletop_tb_lep_top",
+    "singletop_tqb_lep_antitop",
+    "singletop_tqb_lep_top",
+    "singletop_tW_inc_antitop",
+    "singletop_tW_inc_top",
+    "singletop_tW_dil_antitop",
+    "singletop_tW_dil_top",
+    "VH_WmH_lvbb",
+    "VH_WpH_lvbb",
+    "VH_ZZ_llvv",
+    "VH_ZH_llbb",
+    "VH_ggZZ_llvv",
+    "VH_ggZH_ZincWWlvlv",
+    "VH_ggZH_ZincWWlvqq",
+    "VH_ZH_ZincWWlvqq",
+    "VH_ggZH_Zinc_tautau",
+    "VH_ZH_ZllWWlvqq",
+    "VH_mWH_WincWWlvlv",
+    "VH_mWH_WincWWlvqq",
+    "VH_mWH_WlepWWlvlv",
+    "VH_mWH_WlepWWlvqq",
+    "VH_pWH_WincWWlvlv",
+    "VH_pWH_WincWWlvqq",
+    "VH_pWH_WlepWWlvlv",
+    "VH_pWH_WlepWWlvqq",
+    "ggH_tautaul13l7",
+    "ggH_VH_WWlvlv",
+    "ggH_WWlvlv",
+    "ggH_WWlvqq",
+    "ggH_tautaulm15hp20",
+    "ggH_tautaulp15hm20",
+    "ggH_tautauh30h20",
+    "VH_mWinc_tautau",
+    "VH_pWinc_tautau",
+    #"VH_ZH_Zinc_tautau",
+    "VH_ZH_ggZinc_tautau",
+    "ttH_semilep",
+    "ttH_dilep",
+    "ttH_semilep_tautau",
+    "ttH_dilep_tautau",
+    "ttH_allhad_tautau",
+    "VH_ZH_Zhad_tautau",
+    "ggVH_ZH_llbb",
+    "ttW_2L",
+    "ttll_ee",
+    "ttll_mm",
+    "ttll_tautau",
+    "ttll_Zqq",
+    #"VH_ZH_WWlvlv_fix",
+    #"VH_ZH_WWlvqq_fix",
+    #"VH_WH_mWlep_lvlv_fix",
+    #"VH_WH_mWlep_lvqq_fix",
+    #"VH_WH_pWlep_lvlv_fix",
+    #"VH_WH_pWlep_lvqq_fix",
+    #"VH_ZH_WW_lvlv_fix",
+    #"VH_ZH_WW_lvqq_fix",
+    #"VH_ZH_Zinc_WWlvlv_fix",
+    #"VH_ZH_Zinc_WWlvqq_fix",
+    #"VH_WH_mWinc_WWlvlv_fix",
+    #"VH_WH_mWinc_WWlvqq_fix",
+    #"VH_WH_pWinc_WWlvlv_fix",
+    #"VH_WH_pWinc_WWlvqq_fix",
+    #"VH_ZH_qqZinc_WWlvlv_fix",
+    #"VH_ZH_qqZinc_WWlvqq_fix",
+    "ggH_WW_lvlv_fix",
+    "ggH_ZZ_llvv_fix",
+    "Wenu+jet_Bfilt",
+    "Wenu+jet_CFilterBveto",
+    "Wenu+jet_CvetoBveto",
+    "Wmunu+jet_Bfilt",
+    "Wmunu+jet_CFilterBveto",
+    "Wmunu+jet_CvetoBveto",
+    "Wtaunu+jet_Bfilt",
+    "Wtaunu+jet_CFilterBveto",
+    "Wtaunu+jet_CvetoBveto",
+    "bbWW_251",
+    "bbtt_251",
+    "bbZZ_251",
+    "bbtt_260",
+    "bbWW_260",
+    "bbZZ_260",
+    "bbtt_300",
+    "bbWW_300",
+    "bbZZ_300",
+    "bbtt_400",
+    "bbWW_400",
+    "bbZZ_400",
+    "bbtt_500",
+    "bbWW_500",
+    "bbZZ_500",
+    "bbtt_600",
+    "bbWW_600",
+    "bbZZ_600",
+    "bbtt_800",
+    "bbWW_800",
+    "bbZZ_800",
+    "bbWW_1000",
+    "bbtt_1000",
+    "bbZZ_1000",
+    ]
+
+  NW_weight: 'bbll_NW_neutrinoweight_NOSYS'
+
+  # Perform custom cuts on specific samples or stacks
+  # customCutPerSample: {
+  #   'example_name': {
+  #     'samples': ['ttbar_dilep', 'another_sample'],
+  #     'cuts': ['cut'],
+  #   },
+  # }
+
+  # customCutPerStack: {
+  #   'example_name': {
+  #     'stacks': ['Z+HF', 'another_stack'],
+  #     'cuts': ['cut'],
+  #   },
+  # }
+  
+  customSelection: {
+    'NW_weight_selection' : {
+      'legend upper' : 'Neutrino Weight < 0',
+      'legend lower' : '',
+      'cuts' : ['$NW_weight$ < 0'],
+    },
+    'ttbar_CR_2jets': {
+      'legend upper': 'ttbar_CR_2jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 2) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_3jets': {
+      'legend upper': 'ttbar_CR_3jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 3) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_4jets': {
+      'legend upper': 'ttbar_CR_4jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 4) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_5jets': {
+      'legend upper': 'ttbar_CR_5jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 5) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_6jets': {
+      'legend upper': 'ttbar_CR_6jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 6) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_7jets': {
+      'legend upper': 'ttbar_CR_7jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 7) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_8jets': {
+      'legend upper': 'ttbar_CR_8jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 8) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_9jets': {
+      'legend upper': 'ttbar_CR_9jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 9) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_10jets': {
+      'legend upper': 'ttbar_CR_10jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 10) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_11jets': {
+      'legend upper': 'ttbar_CR_11jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 11) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_12jets': {
+      'legend upper': 'ttbar_CR_12jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 12) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_13jets': {
+      'legend upper': 'ttbar_CR_13jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 13) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_14jets': {
+      'legend upper': 'ttbar_CR_14jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 14) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+    'ttbar_CR_15jets': {
+      'legend upper': 'ttbar_CR_15jets',
+      'legend lower': '',
+      'cuts': ['(bbll_nJets_NOSYS == 15) && (bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)']
+    },
+  }
+
+  customHists: {
+    '$NW_weight$' : {
+        'x-axis title': 'Neutrino Weight',
+        'units' : '',
+        'x-min' : -2.,
+        'x-max' : 1.,
+        'nBins' : 50,
+        'toGeV' : False,
+    },
+    'bbll_HT2_NOSYS' : {
+        'x-axis title': 'H_{T}^{2} [GeV]',
+        'units' : '',
+        'x-min' : 0.,
+        'x-max' : 1999.,
+        'nBins' : 50,
+        'toGeV' : True,
+    },
+    'bbll_nJets_NOSYS' : {
+        'x-axis title': 'Number of Jets',
+        'units' : '',
+        'x-min' : 0.,
+        'x-max' : 35.,
+        'nBins' : 35,
+        'toGeV' : False,
+    },
+  }
+
+  selectionToPlot: [
+    'preselection',
+    # 'ZHF_CR',
+    'ttbar_CR',
+    # 'singletop_CR',
+    'Signal_Region',
+    # 'Signal_Region2',
+    # 'NW_weight_selection',
+    # 'preselection_mll',
+    # 'preselection_mll',
+    # 'preselection_SF',
+    # 'preselection_DF',
+    # 'preselection_ee',
+    # 'preselection_mm',
+    # 'singletop_CR_ee',
+    # 'singletop_CR_mm',
+    # 'singletop_CR_em',
+    ttbar_CR_2jets,
+    ttbar_CR_3jets,
+    ttbar_CR_4jets,
+    ttbar_CR_5jets,
+    ttbar_CR_6jets,
+    ttbar_CR_7jets,
+    ttbar_CR_8jets,
+    ttbar_CR_9jets,
+    ttbar_CR_10jets,
+    ttbar_CR_11jets,
+    ttbar_CR_12jets,
+    ttbar_CR_13jets,
+    ttbar_CR_14jets,
+    ttbar_CR_15jets,
+    ]
+    
+  histosToPlot: [
+    # "bbll_Lepton1_pt_NOSYS",
+    "bbll_HT2_NOSYS",
+    "bbll_nJets_NOSYS",
+    # "bbll_Lepton2_pt_NOSYS",
+    # "bbll_mll_NOSYS",
+    "bbll_mbb_NOSYS",
+    "bbll_mbbllmet_NOSYS",
+    "bbll_Jet_b1_pt_NOSYS",
+    # "bbll_Jet_b2_pt_NOSYS",
+    # "bbll_mbl_NOSYS",
+    # "bbll_pTll_NOSYS",
+    # "bbll_pTll_NOSYS",
+    # "bbll_dRbb_NOSYS",
+    # "$NW_weight$",
+  ]
