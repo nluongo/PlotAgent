@@ -1,0 +1,137 @@
+# configs/selections.yaml
+# Authoritative definitions for all selection regions.
+# Replaces: SelectionDict() from histoDict.py and customSelection in config.yaml.
+#
+# Each entry defines a named selection region with:
+#   legend upper: text for upper legend line
+#   legend lower: text for lower legend line (can be empty)
+#   cuts: list of C++ boolean expressions (AND-ed together by the loader,
+#         matching current behavior where selectionDict[s]['cuts'][0] is used)
+
+selections:
+
+  preselection:
+    legend upper: "Preselection"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS)"
+
+  preselection_mll:
+    legend upper: "Pre-sel and #it{m_{ll}} > 15GeV"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && bbll_mll_NOSYS>15e3)"
+
+  preselection_mbb:
+    legend upper: "Pre-sel and #it{m_{ll}} [40-210]GeV"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && bbll_mbb_NOSYS>40e3 && bbll_mbb_NOSYS<210e3)"
+
+  preselection_SF:
+    legend upper: "OS and SF leptons"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && bbll_IS_SF_NOSYS)"
+
+  preselection_DF:
+    legend upper: "OS and DF leptons"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && bbll_IS_em_NOSYS)"
+
+  preselection_ee:
+    legend upper: "OS and SF leptons (ee only)"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && bbll_IS_ee_NOSYS)"
+
+  preselection_mm:
+    legend upper: "OS and SF leptons (mm only)"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && bbll_IS_mm_NOSYS)"
+
+  preselection_Wt_CR:
+    legend upper: "Preselection_Wt_CR"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS>200e3)"
+
+  Signal_Region:
+    legend upper: "SR1"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && ((bbll_mll_NOSYS>15e3 && bbll_mll_NOSYS<75e3 && bbll_IS_SF_NOSYS) || (bbll_mll_NOSYS>15e3 && bbll_mll_NOSYS<110e3 && bbll_IS_em_NOSYS)) && bbll_mbb_NOSYS >60e3 && bbll_mbb_NOSYS < 160e3)"
+
+  Signal_Region2:
+    legend upper: "SR2"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && bbll_IS_SF_NOSYS && (bbll_mll_NOSYS > 75e3 && bbll_mll_NOSYS < 110e3) && (bbll_mbb_NOSYS > 60e3 && bbll_mbb_NOSYS < 160e3))"
+
+  ZHF_CR:
+    legend upper: "ZHF_CR"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && bbll_IS_SF_NOSYS && bbll_mll_NOSYS>75e3 && bbll_mll_NOSYS<110e3 && (bbll_mbb_NOSYS < 40e3 || bbll_mbb_NOSYS > 210e3) && bbll_Lepton2_pt_NOSYS < 40e3 && bbll_MET_sig_NOSYS<3.5)"
+
+  ttbar_CR:
+    legend upper: "ttbar_CR"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)"
+
+  ttbar_CR_SF:
+    legend upper: "ttbar_CR_SF"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && bbll_IS_SF_NOSYS && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)"
+
+  ttbar_CR_DF:
+    legend upper: "ttbar_CR_DF"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && bbll_IS_em_NOSYS && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)"
+
+  ttbar_CR_VBFVeto:
+    legend upper: "ttbar_CR_VBFVeto"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_VBFVETO_SR1_NOSYS && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS<250e3)"
+
+  singletop_CR:
+    legend upper: "stop_CR"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS>250e3 && met_met_NOSYS>50e3)"
+
+  singletop_CR_lowmass:
+    legend upper: "stop_CR_lowmass"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS>250e3 && bbll_Jet_b2_pt_NOSYS > 45e3 && met_met_NOSYS>50e3)"
+
+  singletop_CR_pTcuts:
+    legend upper: "stop_CR_lowmass"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS>250e3 && bbll_Jet_b1_pt_NOSYS > 45e3 && bbll_Jet_b2_pt_NOSYS > 45e3 && met_met_NOSYS>50e3)"
+
+  singletop_CR_ee:
+    legend upper: "stop_CR_ee"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS>250e3 && bbll_IS_ee_NOSYS && met_met_NOSYS>50e3)"
+
+  singletop_CR_mm:
+    legend upper: "stop_CR_mm"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS>250e3 && bbll_IS_mm_NOSYS && met_met_NOSYS>50e3)"
+
+  singletop_CR_em:
+    legend upper: "stop_CR_em"
+    legend lower: ""
+    cuts:
+      - "(bbll_TWO_OPPOSITE_CHARGE_LEPTONS_NOSYS && (bbll_IS_SF_NOSYS || bbll_IS_em_NOSYS) && bbll_mll_NOSYS>110e3 && bbll_mbl_NOSYS>250e3 && bbll_IS_em_NOSYS && met_met_NOSYS>50e3)"

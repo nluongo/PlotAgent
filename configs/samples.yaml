@@ -1,0 +1,803 @@
+# configs/samples.yaml
+# Authoritative source for all physics samples and plotting groups.
+# Replaces: SampleDict_run2/3(), SignalDict(), CutPerSampleDict(), CutPerStackDict()
+#           from histoDict.py, and sample_map_run2/3, campaign_map_run2/3,
+#           data_campaign_map_run2 from PlottingList.py.
+#
+# Two-section design:
+#   samples: individual physics samples defined once, with per-run dataset_id and campaigns.
+#            The same sample can be referenced by multiple stacks.
+#   stacks:  named plotting groups that reference sample names. A stack defines what
+#            appears as one entry in the legend/histogram stack. Multiple stacks can
+#            reference the same sample (e.g., bbWW_251 in "HH (251 GeV)" and in "HH bbWW").
+
+# ─── Individual physics samples ────────────────────────────────────────────────
+# Per-sample extra_cuts replaces CutPerSampleDict in histoDict.py.
+samples:
+
+  # ttbar
+  ttbar_dilep:
+    run2: {dataset_id: "410472.e6348_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "601230.e8514", campaigns: [a, d]}
+
+  ttbar_nonallhad:
+    run2: {dataset_id: "410470.e6337_s3681", campaigns: [a, d, e]}
+    # Replicates CutPerSampleDict top_dileptonic_removal
+    extra_cuts: ["(nWLep < 2)"]
+
+  ttbar_allhad:
+    run2: {dataset_id: "410471.e6337_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "601237.e8514", campaigns: [a, d]}
+
+  ttbar_singlelep_fix:
+    run3: {dataset_id: "601229.e8514", campaigns: [a, d]}
+
+  # HH signals — run2
+  bbWW_251:
+    run2: {dataset_id: "538106.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538106.e8548", campaigns: [ares, dres]}
+  bbZZ_251:
+    run2: {dataset_id: "538122.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538122.e8548", campaigns: [ares, dres]}
+  bbtt_251:
+    run2: {dataset_id: "538114.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538114.e8548", campaigns: [ares, dres]}
+  bbZZ_llqq_251:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+
+  bbWW_260:
+    run2: {dataset_id: "538107.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538107.e8548", campaigns: [ares, dres]}
+  bbZZ_260:
+    run2: {dataset_id: "538123.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538123.e8548", campaigns: [ares, dres]}
+  bbtt_260:
+    run2: {dataset_id: "538115.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538115.e8548", campaigns: [ares, dres]}
+  bbZZ_llqq_260:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+
+  bbWW_300:
+    run2: {dataset_id: "538108.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538108.e8548", campaigns: [ares, dres]}
+  bbZZ_300:
+    run2: {dataset_id: "538124.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538124.e8548", campaigns: [ares, dres]}
+  bbtt_300:
+    run2: {dataset_id: "538116.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538116.e8548", campaigns: [ares, dres]}
+  bbZZ_llqq_300:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+
+  bbWW_400:
+    run2: {dataset_id: "538109.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538109.e8548", campaigns: [ares, dres]}
+  bbZZ_400:
+    run2: {dataset_id: "538125.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538125.e8548", campaigns: [ares, dres]}
+  bbtt_400:
+    run2: {dataset_id: "538117.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538117.e8548", campaigns: [ares, dres]}
+  bbZZ_llqq_400:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+
+  bbWW_500:
+    run2: {dataset_id: "538110.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538110.e8548", campaigns: [ares, dres]}
+  bbZZ_500:
+    run2: {dataset_id: "538126.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538126.e8548", campaigns: [ares, dres]}
+  bbtt_500:
+    run2: {dataset_id: "538118.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538118.e8548", campaigns: [ares, dres]}
+  bbZZ_llqq_500:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+
+  bbWW_600:
+    run2: {dataset_id: "538111.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538111.e8548", campaigns: [ares, dres]}
+  bbZZ_600:
+    run2: {dataset_id: "538127.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538127.e8548", campaigns: [ares, dres]}
+  bbtt_600:
+    run2: {dataset_id: "538119.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538119.e8548", campaigns: [ares, dres]}
+  bbZZ_llqq_600:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+
+  bbWW_800:
+    run2: {dataset_id: "538112.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538112.e8548", campaigns: [ares, dres]}
+  bbZZ_800:
+    run2: {dataset_id: "538128.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538128.e8548", campaigns: [ares, dres]}
+  bbtt_800:
+    run2: {dataset_id: "538120.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538120.e8548", campaigns: [ares, dres]}
+  bbZZ_llqq_800:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+
+  bbWW_1000:
+    run2: {dataset_id: "538113.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538113.e8548", campaigns: [ares, dres]}
+  bbZZ_1000:
+    run2: {dataset_id: "538129.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538129.e8548", campaigns: [ares, dres]}
+  bbtt_1000:
+    run2: {dataset_id: "538121.e8547_a907", campaigns: [ares, dres, eres]}
+    run3: {dataset_id: "538121.e8548", campaigns: [ares, dres]}
+  bbZZ_llqq_1000:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+
+  bbWW_1500:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+  bbZZ_1500:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+  bbtt_1500:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+  bbZZ_llqq_1500:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+
+  bbWW_3000:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+  bbZZ_3000:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+  bbtt_3000:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+  bbZZ_llqq_3000:
+    run2: {dataset_id: "", campaigns: [ares, dres, eres]}
+
+  # SM HH signals
+  bbWW_SM_new:
+    run2: {dataset_id: "604382.e8564_a907", campaigns: [ares, dres, eres]}
+  bbtt_SM_new:
+    run2: {dataset_id: "604376.e8564_a907", campaigns: [ares, dres, eres]}
+  bbZZ_SM_new:
+    run2: {dataset_id: "604388.e8564_a907", campaigns: [ares, dres, eres]}
+
+  # bb4l
+  top_bb4l_alldilepflav:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+
+  # Z+jets (HF and LF share dataset_ids; stacks distinguish via extra_cuts)
+  Zee+jet_Bfilt:
+    run2: {dataset_id: "700320.e8351_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700786.e8514", campaigns: [a, d]}
+  Zmumu+jet_Bfilt:
+    run2: {dataset_id: "700323.e8351_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700789.e8514", campaigns: [a, d]}
+  Ztautau+jet_Bfilt:
+    run2: {dataset_id: "700792.e8527_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700792.e8527_s3681", campaigns: [a, d]}
+  Zee+jet_CFilterBveto:
+    run2: {dataset_id: "700321.e8351_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700787.e8514", campaigns: [a, d]}
+  Zee+jet_CfiltBveto:
+    run2: {dataset_id: "700321.e8351_s3681", campaigns: [a, d, e]}
+  Zmumu+jet_CfiltBveto:
+    run2: {dataset_id: "700324.e8351_s3681", campaigns: [a, d, e]}
+  Ztautau+jet_CfiltBveto:
+    run2: {dataset_id: "700793.e8527_s3681", campaigns: [a, d, e]}
+  Zee+jet_CvetoBveto:
+    run2: {dataset_id: "700322.e8351_s3681", campaigns: [a, d, e]}
+  Zee+jet_CvetoBveto_fix:
+    run2: {dataset_id: "700322.e8351_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700788.e8514", campaigns: [a, d]}
+  Zmumu+jet_CvetoBveto:
+    run2: {dataset_id: "700325.e8351_s3681", campaigns: [a, d, e]}
+  Zmumu+jet_CvetoBveto_fix:
+    run2: {dataset_id: "700325.e8351_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700791.e8514", campaigns: [a, d]}
+  Ztautau+jet_CvetoBveto:
+    run2: {dataset_id: "700794.e8527_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700794.e8527_s3681", campaigns: [a, d]}
+  Zmumu+jet_CFilterBveto:
+    run3: {dataset_id: "700790.e8514", campaigns: [a, d]}
+  Ztautau+jet_CFilterBveto:
+    run3: {dataset_id: "700793.e8527_s3681", campaigns: [a, d]}
+  Zee+jet_lowmass_Bfilt:
+    run2: {dataset_id: "700467.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700467.e8379_s3681", campaigns: [a, d]}
+  Zee+jet_lowmass_CfiltBveto:
+    run2: {dataset_id: "700468.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700468.e8379_s3681", campaigns: [a, d]}
+  Zee+jet_lowmass_CvetoBveto:
+    run2: {dataset_id: "700469.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700469.e8379_s3681", campaigns: [a, d]}
+  Zmumu+jet_lowmass_Bfilt:
+    run2: {dataset_id: "700470.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700470.e8379_s3681", campaigns: [a, d]}
+  Zmumu+jet_lowmass_CfiltBveto:
+    run2: {dataset_id: "700471.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700471.e8379_s3681", campaigns: [a, d]}
+  Zmumu+jet_lowmass_CvetoBveto:
+    run2: {dataset_id: "700472.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700472.e8379_s3681", campaigns: [a, d]}
+
+  # Z+jet LF variants (same files as HF above; stacks distinguish via extra_cuts)
+  Zee+jet_Bfilt_light:
+    run2: {dataset_id: "700320.e8351_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700786.e8514", campaigns: [a, d]}
+  Zmumu+jet_Bfilt_light:
+    run2: {dataset_id: "700323.e8351_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700789.e8514", campaigns: [a, d]}
+  Ztautau+jet_Bfilt_light:
+    run2: {dataset_id: "700792.e8527_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700792.e8527_s3681", campaigns: [a, d]}
+  Zee+jet_CfiltBveto_light:
+    run2: {dataset_id: "700321.e8351_s3681", campaigns: [a, d, e]}
+  Zmumu+jet_CfiltBveto_light:
+    run2: {dataset_id: "700324.e8351_s3681", campaigns: [a, d, e]}
+  Ztautau+jet_CfiltBveto_light:
+    run2: {dataset_id: "700793.e8527_s3681", campaigns: [a, d, e]}
+  Zee+jet_CvetoBveto_light:
+    run2: {dataset_id: "700322.e8351_s3681", campaigns: [a, d, e]}
+  Zee+jet_CvetoBveto_light_fix:
+    run2: {dataset_id: "700322.e8351_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700788.e8514", campaigns: [a, d]}
+  Zmumu+jet_CvetoBveto_light:
+    run2: {dataset_id: "700325.e8351_s3681", campaigns: [a, d, e]}
+  Zmumu+jet_CvetoBveto_light_fix:
+    run2: {dataset_id: "700325.e8351_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700791.e8514", campaigns: [a, d]}
+  Ztautau+jet_CvetoBveto_light:
+    run2: {dataset_id: "700794.e8527_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700794.e8527_s3681", campaigns: [a, d]}
+  Zee+jet_CFilterBveto_light:
+    run3: {dataset_id: "700787.e8514", campaigns: [a, d]}
+  Zmumu+jet_CFilterBveto_light:
+    run3: {dataset_id: "700790.e8514", campaigns: [a, d]}
+  Ztautau+jet_CFilterBveto_light:
+    run3: {dataset_id: "700793.e8527_s3681", campaigns: [a, d]}
+  Zee+jet_lowmass_Bfilt_light:
+    run2: {dataset_id: "700467.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700467.e8379_s3681", campaigns: [a, d]}
+  Zee+jet_lowmass_CfiltBveto_light:
+    run2: {dataset_id: "700468.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700468.e8379_s3681", campaigns: [a, d]}
+  Zee+jet_lowmass_CvetoBveto_light:
+    run2: {dataset_id: "700469.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700469.e8379_s3681", campaigns: [a, d]}
+  Zmumu+jet_lowmass_Bfilt_light:
+    run2: {dataset_id: "700470.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700470.e8379_s3681", campaigns: [a, d]}
+  Zmumu+jet_lowmass_CfiltBveto_light:
+    run2: {dataset_id: "700471.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700471.e8379_s3681", campaigns: [a, d]}
+  Zmumu+jet_lowmass_CvetoBveto_light:
+    run2: {dataset_id: "700472.e8379_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "700472.e8379_s3681", campaigns: [a, d]}
+
+  # Diboson
+  Diboson_2lep_os:
+    run2: {dataset_id: "701050.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701050.e8543", campaigns: [a, d]}
+  Diboson_2lep_ss:
+    run2: {dataset_id: "701055.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701055.e8543", campaigns: [a, d]}
+  Diboson_3lep:
+    run2: {dataset_id: "701045.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701045.e8543", campaigns: [a, d]}
+  Diboson_4lep:
+    run2: {dataset_id: "701040.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701040.e8543", campaigns: [a, d]}
+  Diboson_ZqqZll:
+    run2: {dataset_id: "701085.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701085.e8543", campaigns: [a, d]}
+  Diboson_ZbbZll:
+    run2: {dataset_id: "701090.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701090.e8543", campaigns: [a, d]}
+  Diboson_ZbbZvv:
+    run2: {dataset_id: "701100.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701100.e8543", campaigns: [a, d]}
+  Diboson_WqqZll:
+    run2: {dataset_id: "701105.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701105.e8543", campaigns: [a, d]}
+  Diboson_WqqZvv:
+    run2: {dataset_id: "701110.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701110.e8543", campaigns: [a, d]}
+  Diboson_WlvZqq:
+    run2: {dataset_id: "701115.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701115.e8543", campaigns: [a, d]}
+  Diboson_WlvZbb:
+    run2: {dataset_id: "701120.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701120.e8543", campaigns: [a, d]}
+  Diboson_WlvWqq:
+    run2: {dataset_id: "701125.e8547_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "701125.e8543", campaigns: [a, d]}
+  Diboson_WW_ewk:
+    run2: {dataset_id: "345718.e6525_s3681", campaigns: [a, d, e]}
+  Diboson_ZZ_ewk:
+    run2: {dataset_id: "345723.e6213_s3681", campaigns: [a, d, e]}
+  Diboson_4l_0M4l130:
+    run2: {dataset_id: "345705.e6213_s3681", campaigns: [a, d, e]}
+  Diboson_4l_130M4l:
+    run2: {dataset_id: "345706.e6213_s3681", campaigns: [a, d, e]}
+  Diboson_4l_0M4l130_nohiggs:
+    run2: {dataset_id: "345708.e6213_s3681", campaigns: [a, d, e]}
+  Diboson_4l_130M4l_nohiggs:
+    run2: {dataset_id: "345709.e6213_s3681", campaigns: [a, d, e]}
+
+  # Single top
+  singletop_schan_top:
+    run2: {dataset_id: "410644.e6527_s3681", campaigns: [a, d, e]}
+  singletop_schan_antitop:
+    run2: {dataset_id: "410645.e6527_s3681", campaigns: [a, d, e]}
+  singletop_tchan_top:
+    run2: {dataset_id: "410658.e6671_s3681", campaigns: [a, d, e]}
+  singletop_tchan_antitop:
+    run2: {dataset_id: "410659.e6671_s3681", campaigns: [a, d, e]}
+  singletop_Wt_inc_antitop:
+    run2: {dataset_id: "601352.e8547_s4231", campaigns: [a, d, e]}
+    # Replicates CutPerSampleDict top_dileptonic_removal
+    extra_cuts: ["(nWLep < 2)"]
+  singletop_Wt_dil_antitop:
+    run2: {dataset_id: "601353.e8547_s4231", campaigns: [a, d, e]}
+  singletop_Wt_dil_top:
+    run2: {dataset_id: "601354.e8547_s4231", campaigns: [a, d, e]}
+  singletop_Wt_inc_top:
+    run2: {dataset_id: "601355.e8547_s4231", campaigns: [a, d, e]}
+    extra_cuts: ["(nWLep < 2)"]
+  singletop_tb_lep_antitop:
+    run3: {dataset_id: "601348.e8514", campaigns: [a, d]}
+  singletop_tb_lep_top:
+    run3: {dataset_id: "601349.e8514", campaigns: [a, d]}
+  singletop_tqb_lep_antitop:
+    run3: {dataset_id: "601350.e8514", campaigns: [a, d]}
+  singletop_tqb_lep_top:
+    run3: {dataset_id: "601351.e8514", campaigns: [a, d]}
+  singletop_tW_inc_antitop:
+    run3: {dataset_id: "601352.e8551", campaigns: [a, d]}
+  singletop_tW_dil_antitop:
+    run3: {dataset_id: "601353.e8551", campaigns: [a, d]}
+  singletop_tW_dil_top:
+    run3: {dataset_id: "601354.e8551", campaigns: [a, d]}
+  singletop_tW_inc_top:
+    run3: {dataset_id: "601355.e8551", campaigns: [a, d]}
+
+  # ttX
+  ttll_ee:
+    run2: {dataset_id: "504330.e8255_s3797", campaigns: [a, d, e]}
+  ttll_mm:
+    run2: {dataset_id: "504334.e8255_s3797", campaigns: [a, d, e]}
+  ttll_Zqq:
+    run2: {dataset_id: "504338.e8255_s3797", campaigns: [a, d, e]}
+  ttll_Zvv:
+    run2: {dataset_id: "504346.e8255_s3797", campaigns: [a, d, e]}
+  ttW:
+    run2: {dataset_id: "700168.e8273_s3797", campaigns: [a, d, e]}
+  ttW_2L:
+    run3: {dataset_id: "", campaigns: [a, d]}
+  ttll_tautau:
+    run3: {dataset_id: "", campaigns: [a, d]}
+
+  # Single Higgs — run2
+  ggH_tautaul13l7:
+    run2: {dataset_id: "345120.e5814_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "603417.e8559", campaigns: [a, d]}
+  ggH_tautaulm15hp20:
+    run2: {dataset_id: "345121.e5814_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "603416.e8559", campaigns: [a, d]}
+  ggH_tautaulp15hm20:
+    run2: {dataset_id: "345122.e5814_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "603415.e8559", campaigns: [a, d]}
+  ggH_tautauh30h20:
+    run2: {dataset_id: "345123.e5814_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "603414.e8559", campaigns: [a, d]}
+  ggH_etau:
+    run2: {dataset_id: "345124.e5814_s3681", campaigns: [a, d, e]}
+  ggH_mutau:
+    run2: {dataset_id: "345125.e5814_s3681", campaigns: [a, d, e]}
+  ggH_WWlvlv:
+    run2: {dataset_id: "345324.e5769_s3681", campaigns: [a, d, e]}
+  VH_WmH_lvbb:
+    run2: {dataset_id: "345053.e5706_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "603331.e8544", campaigns: [a, d]}
+  VH_WpH_lvbb:
+    run2: {dataset_id: "345054.e5706_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "603332.e8544", campaigns: [a, d]}
+  VH_ZH_llbb:
+    run2: {dataset_id: "345055.e5706_s3681", campaigns: [a, d, e]}
+  VH_ZH_vvbb:
+    run2: {dataset_id: "345056.e5706_s3681", campaigns: [a, d, e]}
+  ggVH_ZH_llbb:
+    run2: {dataset_id: "345057.e5706_s3681", campaigns: [a, d, e]}
+  VH_WpH_WWlvlv:
+    run2: {dataset_id: "345325.e5811_s3681", campaigns: [a, d, e]}
+  VH_WmH_WWlvlv:
+    run2: {dataset_id: "345326.e5823_s3681", campaigns: [a, d, e]}
+  VH_mWinc_tautau:
+    run2: {dataset_id: "345211.e5808_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "603426.e8559", campaigns: [a, d]}
+  VH_pWinc_tautau:
+    run2: {dataset_id: "345212.e5808_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "603427.e8559", campaigns: [a, d]}
+  VH_WpH_lvWWlvqq:
+    run2: {dataset_id: "346561.e7552_s3681", campaigns: [a, d, e]}
+  VH_WmH_qqWWlvlv:
+    run2: {dataset_id: "345433.e5811_s3681", campaigns: [a, d, e]}
+  VH_WmH_lvWWlvqq:
+    run2: {dataset_id: "346560.e7552_s3681", campaigns: [a, d, e]}
+  VH_ZH_Zinc_tautau:
+    run2: {dataset_id: "345217.e5808_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "603428.e8559", campaigns: [a, d]}
+  VH_ZH_qqWWlvlv:
+    run2: {dataset_id: "345336.e5813_s3681", campaigns: [a, d, e]}
+  VH_ZH_ZinclWWlvlv:
+    run2: {dataset_id: "346524.e7523_s3681", campaigns: [a, d, e]}
+  ttH_allhad:
+    run2: {dataset_id: "346343.e7148_s3681", campaigns: [a, d, e]}
+  ttH_semilep:
+    run2: {dataset_id: "346344.e7148_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "602638.e8549", campaigns: [a, d]}
+  ttH_dilep:
+    run2: {dataset_id: "346345.e7148_s3681", campaigns: [a, d, e]}
+    run3: {dataset_id: "602637.e8549", campaigns: [a, d]}
+  H_ZZ_llvv:
+    run2: {dataset_id: "603887.e8481_s3797", campaigns: [a, d, e]}
+  VH_ZZ_llvv:
+    run2: {dataset_id: "603889.e8481_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "603333.e8544", campaigns: [a, d]}
+  VH_ggZZ_llvv:
+    run2: {dataset_id: "603890.e8481_s3797", campaigns: [a, d, e]}
+    run3: {dataset_id: "603335.e8544", campaigns: [a, d]}
+  VH_ZH_ggZinc_tautau:
+    run3: {dataset_id: "603418.e8559", campaigns: [a, d]}
+  ttH_semilep_tautau:
+    run3: {dataset_id: "603421.e8559", campaigns: [a, d]}
+  ttH_dilep_tautau:
+    run3: {dataset_id: "603420.e8559", campaigns: [a, d]}
+  VH_ZH_Zhad_tautau:
+    run3: {dataset_id: "601606.e8537", campaigns: [a, d]}
+  VH_ZH_WWlvlv_fix:
+    run3: {dataset_id: "603508.e8566", campaigns: [a, d]}
+  VH_ZH_WWlvqq_fix:
+    run3: {dataset_id: "603509.e8566", campaigns: [a, d]}
+  VH_WH_mWlep_lvlv_fix:
+    run3: {dataset_id: "603510.e8566", campaigns: [a, d]}
+  VH_WH_mWlep_lvqq_fix:
+    run3: {dataset_id: "603511.e8566", campaigns: [a, d]}
+  VH_WH_pWlep_lvlv_fix:
+    run3: {dataset_id: "603512.e8566", campaigns: [a, d]}
+  VH_WH_pWlep_lvqq_fix:
+    run3: {dataset_id: "603513.e8566", campaigns: [a, d]}
+  VH_ZH_WW_lvlv_fix:
+    run3: {dataset_id: "603514.e8566", campaigns: [a, d]}
+  VH_ZH_WW_lvqq_fix:
+    run3: {dataset_id: "603515.e8566", campaigns: [a, d]}
+  VH_ZH_Zinc_WWlvlv_fix:
+    run3: {dataset_id: "602521.e8566", campaigns: [a, d]}
+  VH_ZH_Zinc_WWlvqq_fix:
+    run3: {dataset_id: "602522.e8566", campaigns: [a, d]}
+  VH_WH_mWinc_WWlvlv_fix:
+    run3: {dataset_id: "602523.e8566", campaigns: [a, d]}
+  VH_WH_mWinc_WWlvqq_fix:
+    run3: {dataset_id: "602524.e8566", campaigns: [a, d]}
+  VH_WH_pWinc_WWlvlv_fix:
+    run3: {dataset_id: "602525.e8566", campaigns: [a, d]}
+  VH_WH_pWinc_WWlvqq_fix:
+    run3: {dataset_id: "602526.e8566", campaigns: [a, d]}
+  VH_ZH_qqZinc_WWlvlv_fix:
+    run3: {dataset_id: "602527.e8566", campaigns: [a, d]}
+  VH_ZH_qqZinc_WWlvqq_fix:
+    run3: {dataset_id: "602528.e8566", campaigns: [a, d]}
+  ggH_WW_lvlv_fix:
+    run3: {dataset_id: "602632.e8557", campaigns: [a, d]}
+  ggH_ZZ_llvv_fix:
+    run3: {dataset_id: "604013.e8557", campaigns: [a, d]}
+
+  # W+jet
+  Wenu+jet_Bfilt:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+    run3: {dataset_id: "", campaigns: [a, d]}
+  Wenu+jet_CFilterBveto:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+    run3: {dataset_id: "", campaigns: [a, d]}
+  Wenu+jet_CvetoBveto:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+    run3: {dataset_id: "", campaigns: [a, d]}
+  Wmunu+jet_Bfilt:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+    run3: {dataset_id: "", campaigns: [a, d]}
+  Wmunu+jet_CfiltBveto:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+  Wmunu+jet_CvetoBveto:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+  Wmunu+jet_CFilterBveto:
+    run3: {dataset_id: "", campaigns: [a, d]}
+  Wmunu+jet_CvetoBveto_fix:
+    run3: {dataset_id: "", campaigns: [a, d]}
+  Wtaunu_H+jet_CfiltBveto:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+  Wtaunu_L+jet_Bfilt:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+  Wtaunu_L+jet_CfiltBveto:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+  Wtaunu_L+jet_CvetoBveto:
+    run2: {dataset_id: "", campaigns: [a, d, e]}
+  Wtaunu+jet_Bfilt:
+    run3: {dataset_id: "", campaigns: [a, d]}
+  Wtaunu+jet_CFilterBveto:
+    run3: {dataset_id: "", campaigns: [a, d]}
+  Wtaunu+jet_CvetoBveto:
+    run3: {dataset_id: "", campaigns: [a, d]}
+
+
+# ─── Plotting groups (stacks) ──────────────────────────────────────────────────
+# Each stack references samples by name from the `samples` section above.
+# The same sample can appear in multiple stacks.
+# extra_cuts on a stack replicates CutPerStackDict (applied to all samples in the stack).
+# is_signal: true → treated as signal overlay rather than background stack entry.
+stacks:
+
+  SM Signals:
+    legend: "SM Signals"
+    color: [255, 0, 0]
+    is_signal: true
+    signal_multiplier: 100
+    samples: [bbWW_SM_new, bbtt_SM_new, bbZZ_SM_new]
+
+  bb4l:
+    legend: "#it{bb4l}"
+    color: [93, 175, 188]
+    is_signal: true
+    signal_multiplier: 1
+    samples: [top_bb4l_alldilepflav]
+
+  "HH (251 GeV)":
+    legend: "#it{HH} (251 GeV)"
+    color: [176, 82, 74]
+    is_signal: true
+    signal_multiplier: 200
+    samples: [bbWW_251, bbZZ_251, bbtt_251, bbZZ_llqq_251]
+
+  "HH (260 GeV)":
+    legend: "#it{HH} (260 GeV)"
+    color: [186, 102, 82]
+    is_signal: true
+    signal_multiplier: 200
+    samples: [bbWW_260, bbZZ_260, bbtt_260, bbZZ_llqq_260]
+
+  "HH (300 GeV)":
+    legend: "#it{HH} (300 GeV)"
+    color: [196, 122, 90]
+    is_signal: true
+    signal_multiplier: 200
+    samples: [bbWW_300, bbZZ_300, bbtt_300, bbZZ_llqq_300]
+
+  "HH (400 GeV)":
+    legend: "#it{HH} (400 GeV)"
+    color: [204, 142, 102]
+    is_signal: true
+    signal_multiplier: 200
+    samples: [bbWW_400, bbZZ_400, bbtt_400, bbZZ_llqq_400]
+
+  "HH (500 GeV)":
+    legend: "#it{HH} (500 GeV)"
+    color: [198, 160, 122]
+    is_signal: true
+    signal_multiplier: 200
+    samples: [bbWW_500, bbZZ_500, bbtt_500, bbZZ_llqq_500]
+
+  "HH (600 GeV)":
+    legend: "#it{HH} (600 GeV)"
+    color: [180, 176, 150]
+    is_signal: true
+    signal_multiplier: 200
+    samples: [bbWW_600, bbZZ_600, bbtt_600, bbZZ_llqq_600]
+
+  "HH (800 GeV)":
+    legend: "#it{HH} (800 GeV)"
+    color: [158, 168, 168]
+    is_signal: true
+    signal_multiplier: 200
+    samples: [bbWW_800, bbZZ_800, bbtt_800, bbZZ_llqq_800]
+
+  "HH (1000 GeV)":
+    legend: "#it{HH} (1000 GeV)"
+    color: [158, 168, 168]
+    is_signal: true
+    signal_multiplier: 200
+    samples: [bbWW_1000, bbZZ_1000, bbtt_1000, bbZZ_llqq_1000]
+
+  "HH (1500 GeV)":
+    legend: "#it{HH} (1500 GeV)"
+    color: [108, 146, 196]
+    is_signal: true
+    signal_multiplier: 200
+    samples: [bbWW_1500, bbZZ_1500, bbtt_1500, bbZZ_llqq_1500]
+
+  "HH (3000 GeV)":
+    legend: "#it{HH} (3000 GeV)"
+    color: [90, 130, 202]
+    is_signal: true
+    signal_multiplier: 200
+    samples: [bbWW_3000, bbZZ_3000, bbtt_3000, bbZZ_llqq_3000]
+
+  # Example of a cross-mass grouping enabled by the separated sample definitions:
+  # "HH bbWW (all masses)":
+  #   legend: "#it{HH} (bbWW)"
+  #   color: [200, 100, 80]
+  #   is_signal: true
+  #   signal_multiplier: 200
+  #   samples: [bbWW_251, bbWW_260, bbWW_300, bbWW_400, bbWW_500, bbWW_600, bbWW_800, bbWW_1000]
+
+  ttbar:
+    legend: "#it{t#bar{t}}"
+    color: [93, 175, 188]
+    samples: [ttbar_dilep, ttbar_nonallhad, ttbar_allhad]
+
+  Z+HF:
+    legend: "#it{Z}+HF"
+    color: [80, 80, 227]
+    # Applied to all samples in this stack (replicates CutPerStackDict HFcutlist)
+    extra_cuts:
+      - "(bbll_Jet_b1_truthLabel_NOSYS >= 4 && bbll_Jet_b2_truthLabel_NOSYS >= 4)"
+    samples:
+      - Zee+jet_Bfilt
+      - Zmumu+jet_Bfilt
+      - Ztautau+jet_Bfilt
+      - Zee+jet_CFilterBveto
+      - Zee+jet_CfiltBveto
+      - Zmumu+jet_CfiltBveto
+      - Ztautau+jet_CfiltBveto
+      - Zee+jet_CvetoBveto
+      - Zee+jet_CvetoBveto_fix
+      - Zmumu+jet_CvetoBveto
+      - Zmumu+jet_CvetoBveto_fix
+      - Ztautau+jet_CvetoBveto
+      - Zee+jet_lowmass_Bfilt
+      - Zee+jet_lowmass_CfiltBveto
+      - Zee+jet_lowmass_CvetoBveto
+      - Zmumu+jet_lowmass_Bfilt
+      - Zmumu+jet_lowmass_CfiltBveto
+      - Zmumu+jet_lowmass_CvetoBveto
+
+  Z+jet:
+    legend: "#it{Z}+jet"
+    color: [130, 130, 130]
+    # Applied to all samples in this stack (replicates CutPerStackDict LFcutlist)
+    extra_cuts:
+      - "(bbll_Jet_b1_truthLabel_NOSYS < 4 && bbll_Jet_b2_truthLabel_NOSYS < 4)"
+    samples:
+      - Zee+jet_Bfilt_light
+      - Zmumu+jet_Bfilt_light
+      - Ztautau+jet_Bfilt_light
+      - Zee+jet_CfiltBveto_light
+      - Zmumu+jet_CfiltBveto_light
+      - Ztautau+jet_CfiltBveto_light
+      - Zee+jet_CvetoBveto_light
+      - Zee+jet_CvetoBveto_light_fix
+      - Zmumu+jet_CvetoBveto_light
+      - Zmumu+jet_CvetoBveto_light_fix
+      - Ztautau+jet_CvetoBveto_light
+      - Zee+jet_lowmass_Bfilt_light
+      - Zee+jet_lowmass_CfiltBveto_light
+      - Zee+jet_lowmass_CvetoBveto_light
+      - Zmumu+jet_lowmass_Bfilt_light
+      - Zmumu+jet_lowmass_CfiltBveto_light
+      - Zmumu+jet_lowmass_CvetoBveto_light
+
+  Diboson:
+    legend: "Diboson"
+    color: [20, 100, 150]
+    samples:
+      - Diboson_2lep_os
+      - Diboson_2lep_ss
+      - Diboson_3lep
+      - Diboson_4lep
+      - Diboson_ZqqZll
+      - Diboson_ZbbZll
+      - Diboson_ZbbZvv
+      - Diboson_WqqZll
+      - Diboson_WqqZvv
+      - Diboson_WlvZqq
+      - Diboson_WlvZbb
+      - Diboson_WlvWqq
+      - Diboson_WW_ewk
+      - Diboson_ZZ_ewk
+      - Diboson_4l_0M4l130
+      - Diboson_4l_130M4l
+      - Diboson_4l_0M4l130_nohiggs
+      - Diboson_4l_130M4l_nohiggs
+
+  singletop:
+    legend: "#it{Wt}"
+    color: [20, 200, 20]
+    samples:
+      - singletop_schan_top
+      - singletop_schan_antitop
+      - singletop_tchan_top
+      - singletop_tchan_antitop
+      - singletop_Wt_inc_antitop
+      - singletop_Wt_dil_antitop
+      - singletop_Wt_dil_top
+      - singletop_Wt_inc_top
+
+  ttX:
+    legend: "#it{ttX}"
+    color: [200, 200, 20]
+    samples: [ttll_ee, ttll_mm, ttll_Zqq, ttll_Zvv, ttW]
+
+  singleH:
+    legend: "Higgs"
+    color: [255, 0, 255]
+    samples:
+      - ggH_tautaul13l7
+      - ggH_tautaulm15hp20
+      - ggH_tautaulp15hm20
+      - ggH_tautauh30h20
+      - ggH_etau
+      - ggH_mutau
+      - ggH_WWlvlv
+      - VH_WmH_lvbb
+      - VH_WpH_lvbb
+      - VH_ZH_llbb
+      - VH_ZH_vvbb
+      - ggVH_ZH_llbb
+      - VH_WpH_WWlvlv
+      - VH_WmH_WWlvlv
+      - VH_mWinc_tautau
+      - VH_pWinc_tautau
+      - VH_WpH_lvWWlvqq
+      - VH_WmH_qqWWlvlv
+      - VH_WmH_lvWWlvqq
+      - VH_ZH_Zinc_tautau
+      - VH_ZH_qqWWlvlv
+      - VH_ZH_ZinclWWlvlv
+      - ttH_allhad
+      - ttH_semilep
+      - ttH_dilep
+      - H_ZZ_llvv
+      - VH_ZZ_llvv
+      - VH_ggZZ_llvv
+
+  W+jet:
+    legend: "W+jet"
+    color: [80, 80, 255]
+    samples:
+      - Wenu+jet_Bfilt
+      - Wenu+jet_CFilterBveto
+      - Wenu+jet_CvetoBveto
+      - Wmunu+jet_Bfilt
+      - Wmunu+jet_CfiltBveto
+      - Wmunu+jet_CvetoBveto
+      - Wtaunu_H+jet_CfiltBveto
+      - Wtaunu_L+jet_Bfilt
+      - Wtaunu_L+jet_CfiltBveto
+      - Wtaunu_L+jet_CvetoBveto
+
+
+# ─── Campaign suffix maps ───────────────────────────────────────────────────────
+# Replaces campaign_map_run2/3 from PlottingList.py
+campaigns:
+  run2:
+    a: "r13167_p6266"
+    d: "r13144_p6266"
+    e: "r13145_p6266"
+    ares: "r14859_p6266"
+    dres: "r14860_p6266"
+    eres: "r14861_p6266"
+  run3:
+    a: "s4162_r14622_p6266"
+    d: "s4159_r15224_p6266"
+    ares: "a910_r14932_p6266"
+    dres: "a911_r15224_p6266"
+    afix: "s4162_r15540_p6266"
+    dfix: "s4159_r15530_p6266"
+
+
+# ─── Data campaigns ─────────────────────────────────────────────────────────────
+# Replaces data_campaign_map_run2 from PlottingList.py
+data_campaigns:
+  run2:
+    "15": "grp15_p5855"
+    "16": "grp16_p5855"
+    "17": "grp17_p5855"
+    "18": "grp18_p5855"
+  run3: {}
+
+
+luminosity:
+  run2: 140.0
+  run3: 58.6

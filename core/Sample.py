@@ -2,6 +2,16 @@ import os
 import ROOT as r
 from datetime import datetime
 
+class _CachedHistWrapper:
+	"""Wraps a pre-computed histogram clone so it looks like an RDF lazy result.
+	Allows inject_cached_histogram() to be transparent to eval_hist_value()."""
+	def __init__(self, hist):
+		self._hist = hist
+
+	def GetValue(self):
+		return self._hist
+
+
 class Sample:
 	graphs = []
 	do_yields = False
@@ -281,3 +291,21 @@ class Sample:
 				# else:
 				# 	self.HThistos_data[i].Add(self.HThistos[i])
 		return self.HThistos
+
+	def inject_cached_histogram(self, observable_name, selection_name, cached_hist):
+		"""Store a pre-computed histogram so eval_hist_value() can use it without
+		calling get_histogram_ptr() or touching the RDF graph."""
+		key = observable_name + selection_name
+		self.histos_ptr[key] = _CachedHistWrapper(cached_hist)
+
+	def get_computed_histogram(self, observable_name, selection_name):
+		"""Return a detached clone of the histogram computed by get_histogram_ptr().
+		Returns None if this slot was already filled by inject_cached_histogram()
+		(i.e., it was a cache hit and there is nothing new to store)."""
+		key = observable_name + selection_name
+		entry = self.histos_ptr.get(key)
+		if entry is None or isinstance(entry, _CachedHistWrapper):
+			return None
+		h = entry.GetValue().Clone()
+		h.SetDirectory(0)
+		return h

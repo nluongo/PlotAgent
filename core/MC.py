@@ -137,7 +137,11 @@ class MC(Sample):
 	@classmethod
 	def set_sampleDict(cls, sampleDict):
 		cls.SampleDict = sampleDict
- 
+
+	@classmethod
+	def set_SignalDict(cls, signal_dict):
+		cls.SignalDict = signal_dict
+
 	@classmethod
 	def set_scale_formula(cls, branches):
 		cls.scale_formula = branches
@@ -232,7 +236,7 @@ class MC(Sample):
 	def draw_signal_histograms(cls, legend):
 		for s_name in cls.signal_map:
 			cls.signal_map[s_name].SetLineWidth(2)
-			cls.signal_map[s_name].SetLineColor(cls.colors.GetColor(*SignalDict()[s_name]["color"]))
+			cls.signal_map[s_name].SetLineColor(cls.colors.GetColor(*cls.SignalDict[s_name]["color"]))
 			cls.signal_map[s_name].Scale(cls.SignalDict[s_name]["multiplier"])
 			cls.signal_map[s_name].Draw("SAME HIST")
 			legend.AddEntry(cls.signal_map[s_name], 

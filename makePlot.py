@@ -1,5 +1,6 @@
 import os
 import ROOT as r
+import hashlib
 import json
 from core.utils import *
 from histoDict import *
@@ -9,7 +10,7 @@ from core.MC import *
 from core.Data import *
 from ROOT import gROOT, gStyle
 from array import array
-from core.parse_config import load_and_process_yaml
+from core.parse_config import load_and_process_yaml, load_config
 
 r.gROOT.LoadMacro("./AtlasStyle/AtlasStyle.C")
 r.gROOT.LoadMacro("./AtlasStyle/AtlasLabels.C")
@@ -54,6 +55,119 @@ selectionDict = SelectionDict()
 SignalDict = SignalDict()
 cutPerSampleDict = CutPerSampleDict()
 cutPerStackDict = CutPerStackDict()
+
+# ---------------------------------------------------------------------------
+# YAML builder helpers — convert YAML config sections into the dict shapes
+# that the existing pipeline expects.
+# ---------------------------------------------------------------------------
+
+def _build_sample_dict_from_yaml(stacks_config):
+    """Pre-restructureSampleMap() format: {stack_name: {samples, color, legend description}}."""
+    result = {}
+    for stack_name, stack in stacks_config.items():
+        result[stack_name] = {
+            'samples': list(stack.get('samples', [])),
+            'color': tuple(stack['color']),
+            'legend description': stack.get('legend', stack_name),
+        }
+    return result
+
+
+def _build_signal_dict_from_yaml(stacks_config):
+    """SignalDict shape from stacks where is_signal: true."""
+    result = {}
+    for stack_name, stack in stacks_config.items():
+        if stack.get('is_signal', False):
+            result[stack_name] = {
+                'legend description': stack.get('legend', stack_name),
+                'color': tuple(stack['color']),
+                'multiplier': stack.get('signal_multiplier', 1),
+            }
+    return result
+
+
+def _build_histo_dict_from_yaml(variables_config):
+    """Pass-through: plots.yaml variables schema matches PlottingDict()."""
+    return dict(variables_config)
+
+
+def _build_selection_dict_from_yaml(selections_config):
+    """Pass-through: selections.yaml schema matches SelectionDict()."""
+    return dict(selections_config)
+
+
+def _build_cut_dicts_from_yaml(stacks_config, samples_config):
+    """Return (cut_per_stack, cut_per_sample) dicts from YAML extra_cuts fields."""
+    cut_per_stack = {}
+    for stack_name, stack in stacks_config.items():
+        if 'extra_cuts' in stack:
+            key = f'yaml_stack_{stack_name}'
+            cut_per_stack[key] = {
+                'stacks': [stack_name],
+                'cuts': list(stack['extra_cuts']),
+            }
+    cut_per_sample = {}
+    for sample_name, sample in samples_config.items():
+        if isinstance(sample, dict) and 'extra_cuts' in sample:
+            key = f'yaml_sample_{sample_name}'
+            cut_per_sample[key] = {
+                'samples': [sample_name],
+                'cuts': list(sample['extra_cuts']),
+            }
+    return cut_per_stack, cut_per_sample
+
+
+def _build_campaign_map_from_yaml(campaigns_config, run_num):
+    """campaign_map (shorthand → full suffix string) for a given run."""
+    return dict(campaigns_config.get(run_num, {}))
+
+
+def _build_sample_map_from_yaml(samples_config, run_num):
+    """sample_map (sample_name → dataset_id) for a given run."""
+    result = {}
+    for sample_name, sample in samples_config.items():
+        if not isinstance(sample, dict):
+            continue
+        run_data = sample.get(run_num, {})
+        if isinstance(run_data, dict) and 'dataset_id' in run_data:
+            result[sample_name] = run_data['dataset_id']
+    return result
+
+
+def _compute_plot_config_hash(histo_name, selection, hist_def,
+                               selections_config, stacks_config, weight_formula):
+    """SHA-256 hash of the config fields that determine a plot's appearance."""
+    key_data = {
+        'histo': histo_name,
+        'selection': selection,
+        'x-min': hist_def.get('x-min'),
+        'x-max': hist_def.get('x-max'),
+        'nBins': hist_def.get('nBins'),
+        'cuts': (selections_config.get(selection) or {}).get('cuts'),
+        'stacks': {k: {'color': v.get('color'), 'legend': v.get('legend')}
+                   for k, v in stacks_config.items()},
+        'weight': str(weight_formula),
+    }
+    return hashlib.sha256(json.dumps(key_data, sort_keys=True).encode()).hexdigest()
+
+
+def _load_plot_hashes(output_path):
+    """Load stored plot config hashes from <output_path>/.plot_hashes.json."""
+    hash_file = os.path.join(output_path, '.plot_hashes.json')
+    if os.path.exists(hash_file):
+        with open(hash_file) as f:
+            return json.load(f)
+    return {}
+
+
+def _save_plot_hashes(output_path, hashes):
+    """Persist plot config hashes to <output_path>/.plot_hashes.json."""
+    hash_file = os.path.join(output_path, '.plot_hashes.json')
+    with open(hash_file, 'w') as f:
+        json.dump(hashes, f, indent=2)
+
+
+# ---------------------------------------------------------------------------
 
 def print_progress_bar(iteration, total, prefix='', suffix='', decimals=1, length=50, fill='█'):
     percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
@@ -129,7 +243,39 @@ def main1D(config={},
         'run2':sample_map_run2,
         'run3':sample_map_run3,
     }
-    
+
+    # ---- YAML path: populate module-level dicts from split config files ----
+    if '_stacks_config' in config:
+        stacks_cfg   = config['_stacks_config']
+        samples_cfg  = config['_samples_config']
+        vars_cfg     = config['_variables_config']
+        sels_cfg     = config['_selections_config']
+        camps_cfg    = config['_campaigns_config']
+
+        histoDict.clear()
+        histoDict.update(_build_histo_dict_from_yaml(vars_cfg))
+
+        selectionDict.clear()
+        selectionDict.update(_build_selection_dict_from_yaml(sels_cfg))
+
+        yaml_sample_dict = _build_sample_dict_from_yaml(stacks_cfg)
+        sampleDicts['run2'] = yaml_sample_dict
+        sampleDicts['run3'] = yaml_sample_dict
+
+        yaml_cut_stack, yaml_cut_sample = _build_cut_dicts_from_yaml(stacks_cfg, samples_cfg)
+        cutPerStackDict.clear()
+        cutPerStackDict.update(yaml_cut_stack)
+        cutPerSampleDict.clear()
+        cutPerSampleDict.update(yaml_cut_sample)
+
+        campaign_maps['run2'] = _build_campaign_map_from_yaml(camps_cfg, 'run2')
+        campaign_maps['run3'] = _build_campaign_map_from_yaml(camps_cfg, 'run3')
+        sample_maps['run2']   = _build_sample_map_from_yaml(samples_cfg, 'run2')
+        sample_maps['run3']   = _build_sample_map_from_yaml(samples_cfg, 'run3')
+
+        MC.set_SignalDict(_build_signal_dict_from_yaml(stacks_cfg))
+    # ------------------------------------------------------------------------
+
     if config["fastframes_input"]:
         if runs == "2":
             sample_map = json.load(open(config["sampleslist_path_Run2"]))
@@ -316,21 +462,43 @@ def main1D(config={},
     #                                  histoDict[histo_name]['x-min'],
     #                                  histoDict[histo_name]['x-max'])
     
+    # ---- Plot-skip hash logic (YAML path only) ----
+    stored_hashes = {}
+    new_hashes    = {}
+    plots_to_skip = set()
+    if '_stacks_config' in config:
+        stored_hashes = _load_plot_hashes(output_path)
+        for _sel in config["selectionToPlot"]:
+            for _histo in config["histosToPlot"]:
+                _hist_def  = histoDict.get(_histo, {})
+                _new_hash  = _compute_plot_config_hash(
+                    _histo, _sel, _hist_def,
+                    config['_selections_config'], config['_stacks_config'],
+                    config.get('weight_factor'))
+                new_hashes[(_sel, _histo)] = _new_hash
+                _out_file  = output_path + _histo + "_" + _sel + ".png"
+                _hash_key  = f"{_histo}__{_sel}"
+                if _new_hash == stored_hashes.get(_hash_key) and os.path.exists(_out_file):
+                    plots_to_skip.add((_sel, _histo))
+    # ------------------------------------------------
+
     # Loop over selection required
     for i, selection in enumerate(config["selectionToPlot"]):
         selection_cuts = selectionDict[selection]['cuts'][0]
         # Loop over histogram required
         for histo_name in config["histosToPlot"]:
+            skip_this_plot = (selection, histo_name) in plots_to_skip
             # Create the variable name
             variable = histoDict.get(histo_name, {}).get('variable', histo_name)
             toGev = histoDict.get(histo_name, {}).get('toGeV', False)
 
-            # Create histogram model
-            hist_model = r.RDF.TH1DModel(f"hist_{variable}_{selection}",
-                                                             f"hist_{variable}_{selection}",
-                                                             histoDict[histo_name]['nBins'],
-                                                             histoDict[histo_name]['x-min'],
-                                                             histoDict[histo_name]['x-max'])
+            # Create histogram model (only needed when not skipping)
+            if not skip_this_plot:
+                hist_model = r.RDF.TH1DModel(f"hist_{variable}_{selection}",
+                                             f"hist_{variable}_{selection}",
+                                             histoDict[histo_name]['nBins'],
+                                             histoDict[histo_name]['x-min'],
+                                             histoDict[histo_name]['x-max'])
 
             for s in mc:
                 for cut in cutPerSampleDict:
@@ -340,15 +508,15 @@ def main1D(config={},
                 mc[s].apply_selection(selection, selectionDict[selection]['cuts'][0])
                 if mc[s].hist_name.startswith("ttbar") and apply_ttbar_reweighting:
                     mc[s].define_ttbar_weight(selection, 'weight')
-                        # print the first 10 ttbar_weight values
                 # Get histogram ptrs for MC samples
-                mc[s].get_histogram_ptr(histo_name,
-                                        variable,
-                                        selection,
-                                        hist_model,
-                                        "weight",
-                                        toGev)
-                    
+                if not skip_this_plot:
+                    mc[s].get_histogram_ptr(histo_name,
+                                            variable,
+                                            selection,
+                                            hist_model,
+                                            "weight",
+                                            toGev)
+
                 # Get Yields ptrs for MC samples
                 if yields:
                     if not apply_ttbar_reweighting or not mc[s].hist_name.startswith("ttbar"):
@@ -360,21 +528,23 @@ def main1D(config={},
                 if config["fastframes_input"]:
                     for campaign in data:
                         data[campaign].apply_selection(selection, selectionDict[selection]['cuts'][0])
-                        data[campaign].get_histogram_ptr(histo_name,
-                                                                                        variable,
-                                                                                        selection,
-                                                                                        hist_model,
-                                                                                        toGev)
+                        if not skip_this_plot:
+                            data[campaign].get_histogram_ptr(histo_name,
+                                                             variable,
+                                                             selection,
+                                                             hist_model,
+                                                             toGev)
                         if yields:
                             data[campaign].set_sample_yields(selection)
                 else:
                     for campaign in data_campaigns:
                         data[campaign].apply_selection(selection, selectionDict[selection]['cuts'][0])
-                        data[campaign].get_histogram_ptr(histo_name,
-                                                                                        variable,
-                                                                                        selection,
-                                                                                        hist_model,
-                                                                                        toGev)
+                        if not skip_this_plot:
+                            data[campaign].get_histogram_ptr(histo_name,
+                                                             variable,
+                                                             selection,
+                                                             hist_model,
+                                                             toGev)
                         if yields:
                             data[campaign].set_sample_yields(selection)
         print_progress_bar(i+1, len(config["selectionToPlot"]), prefix='Creating histograms:', suffix='Complete\n', length=50)
@@ -500,8 +670,12 @@ def main1D(config={},
     for i, selection in enumerate(config["selectionToPlot"]):
         # Evaluate histograms and save them
         for histo_name in config["histosToPlot"]:
+            if (selection, histo_name) in plots_to_skip:
+                print(f"--- Skipping {histo_name} / {selection} (config unchanged, output exists) ---")
+                continue
+
             print("--- Plotting " + histo_name + " with selection " + selection + " ---")
-            
+
             # Reset class members
             MC.reset()
             Data.reset()
@@ -630,7 +804,7 @@ def main1D(config={},
                         padLow.cd()
 
                         MC.significance_ratios[s_name].SetLineWidth(2)
-                        MC.significance_ratios[s_name].SetLineColor(colors.GetColor(*SignalDict[s_name]["color"]))
+                        MC.significance_ratios[s_name].SetLineColor(colors.GetColor(*MC.SignalDict[s_name]["color"]))
 
                         MC.significance_ratios[s_name].Draw("SAME HIST")
 
@@ -675,6 +849,10 @@ def main1D(config={},
             print("Saving the canvas name : ", output_path + histo_name + "_" + selection + ".png")
             canv.SaveAs(output_path + histo_name + "_" + selection + ".png")
             canv.SaveAs(output_path + histo_name + "_" + selection + ".pdf")
+            # Record hash for this plot so future runs can skip it if unchanged
+            _hash_key = f"{histo_name}__{selection}"
+            if (selection, histo_name) in new_hashes:
+                stored_hashes[_hash_key] = new_hashes[(selection, histo_name)]
             canv.Clear()
         # Calculate global yields and write to file
         if yields:
@@ -692,7 +870,11 @@ def main1D(config={},
                                            prefix='Creating plots:',
                                            suffix=f'Saved canvas :'+output_path + histo_name + "_" + selection + ".png\n",
                                            length=50)
-    
+
+    # Persist updated hashes for the next run's skip logic
+    if '_stacks_config' in config:
+        _save_plot_hashes(output_path, stored_hashes)
+
     if config["do_ttbar_reweighting_calc"] and not mcOnly:
         print("Running data ttbar reweighting...")
         Sample.set_mc_yield_wo_ttbar(MC.mc_yield_wo_ttbar)
@@ -752,7 +934,7 @@ if __name__ == "__main__":
 
 
     # Load the config file
-    config = load_and_process_yaml(options.config)["makePlot"]
+    config = load_config(options.config)["makePlot"]
 
     output_path = config["output_path"]+f"/run{options.runs}/"
     # Input and output directories

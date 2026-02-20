@@ -1,0 +1,191 @@
+# configs/plots.yaml
+# Authoritative definitions for all 1D histogram variables.
+# Replaces: PlottingDict() from histoDict.py and customHists in config.yaml.
+#
+# Each key under `variables` is the branch name in the ntuple (or a $var$-resolved alias).
+# Any field not specified inherits from `defaults`.
+
+defaults:
+  toGeV: false
+  units: ""
+  nBins: 50
+  x-min: 0
+  x-max: 1
+
+variables:
+
+  bbll_mll_NOSYS:
+    x-axis title: "#it{m}_{ll} [GeV]"
+    units: "GeV"
+    x-min: 0
+    x-max: 1000
+    nBins: 50
+    toGeV: true
+
+  bbll_HT2_NOSYS:
+    x-axis title: "#it{HT2} [GeV]"
+    units: "GeV"
+    x-min: 0
+    x-max: 800
+    nBins: 80
+    toGeV: true
+
+  bbll_nJets_NOSYS:
+    x-axis title: "#it{nJet}"
+    units: ""
+    x-min: 0
+    x-max: 10
+    nBins: 10
+    toGeV: false
+
+  bbll_PNN_Score_X251_NOSYS:
+    x-axis title: "PNN SR1 251 GeV"
+    units: ""
+    x-min: 0
+    x-max: 1
+    nBins: 10
+    toGeV: false
+
+  bbll_PNN_Score_X1000_NOSYS:
+    x-axis title: "PNN SR1 1000 GeV"
+    units: ""
+    x-min: 0
+    x-max: 1
+    nBins: 10
+    toGeV: false
+
+  bbll_mbb_NOSYS:
+    x-axis title: "#it{m_{bb}} [GeV]"
+    units: "GeV"
+    x-min: 0
+    x-max: 500
+    nBins: 20
+    toGeV: true
+
+  bbll_pTll_NOSYS:
+    x-axis title: "#it{pT}_{ll} [GeV]"
+    units: "GeV"
+    x-min: 0
+    x-max: 300
+    nBins: 30
+    toGeV: true
+
+  bbll_mbbllmet_NOSYS:
+    x-axis title: "#it{m_{bbll}+MET} [GeV]"
+    units: "GeV"
+    x-min: 0
+    x-max: 4000
+    nBins: 200
+    toGeV: true
+
+  bbll_Etabb_NOSYS:
+    x-axis title: "#it{eta_{bb}}"
+    units: ""
+    x-min: -2.5
+    x-max: 2.5
+    nBins: 30
+    toGeV: false
+
+  bbll_Etall_NOSYS:
+    x-axis title: "#it{eta_{ll}}"
+    units: ""
+    x-min: -2.5
+    x-max: 2.5
+    nBins: 30
+    toGeV: false
+
+  bbll_Jet_b1_pt_NOSYS:
+    x-axis title: "#it{p_{T}^{b,lead}} [GeV]"
+    units: "GeV"
+    x-min: 0
+    x-max: 500
+    nBins: 25
+    toGeV: true
+
+  bbll_Jet_b2_pt_NOSYS:
+    x-axis title: "#it{p_{T}^{b,sublead}} [GeV]"
+    units: "GeV"
+    x-min: 0
+    x-max: 300
+    nBins: 30
+    toGeV: true
+
+  bbll_Lepton1_pt_NOSYS:
+    x-axis title: "#it{p_{T}^{l,lead}} [GeV]"
+    units: "GeV"
+    x-min: 0
+    x-max: 300
+    nBins: 30
+    toGeV: true
+
+  bbll_Lepton2_pt_NOSYS:
+    x-axis title: "#it{p_{T}^{l,sublead}} [GeV]"
+    units: "GeV"
+    x-min: 0
+    x-max: 100
+    nBins: 20
+    toGeV: true
+
+  bbll_mbl_NOSYS:
+    x-axis title: "#it{m_{bl}} [GeV]"
+    units: "GeV"
+    x-min: 0
+    x-max: 1000
+    nBins: 50
+    toGeV: true
+
+  bbll_dRbl_min_NOSYS:
+    x-axis title: "min #Delta R_{bl}"
+    units: ""
+    x-min: 0.25
+    x-max: 3
+    nBins: 11
+    toGeV: false
+
+  bbll_dRll_NOSYS:
+    x-axis title: "#Delta R_{ll}"
+    units: ""
+    x-min: 0
+    x-max: 4.5
+    nBins: 18
+    toGeV: false
+
+  bbll_dRbb_NOSYS:
+    x-axis title: "#Delta R_{bb}"
+    units: ""
+    x-min: 0
+    x-max: 5
+    nBins: 30
+    toGeV: false
+
+  bbll_Lepton1_eta_NOSYS:
+    x-axis title: "#it{eta_{lep1}}"
+    units: ""
+    x-min: -2.5
+    x-max: 2.5
+    nBins: 30
+    toGeV: false
+
+  bbll_Lepton2_eta_NOSYS:
+    x-axis title: "#it{eta_{lep2}}"
+    units: ""
+    x-min: -2.5
+    x-max: 2.5
+    nBins: 30
+    toGeV: false
+
+  bbll_Jet_b1_eta_NOSYS:
+    x-axis title: "#it{eta_{b1}}"
+    units: ""
+    x-min: -2.5
+    x-max: 2.5
+    nBins: 30
+    toGeV: false
+
+  bbll_Jet_b2_eta_NOSYS:
+    x-axis title: "#it{eta_{b2}}"
+    units: ""
+    x-min: -2.5
+    x-max: 2.5
+    nBins: 30
+    toGeV: false
