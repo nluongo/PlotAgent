@@ -490,8 +490,8 @@ samples:
   Wenu+jet_Bfilt:
     run2: {dataset_id: "", campaigns: [a, d, e]}
     run3: {dataset_id: "", campaigns: [a, d]}
-  Wenu+jet_CFilterBveto:
-    run2: {dataset_id: "", campaigns: [a, d, e]}
+  Wenu+jet_CfiltBveto:
+    run2: {dataset_id: "700339", campaigns: [a, d, e]}
     run3: {dataset_id: "", campaigns: [a, d]}
   Wenu+jet_CvetoBveto:
     run2: {dataset_id: "", campaigns: [a, d, e]}
@@ -544,70 +544,70 @@ stacks:
     signal_multiplier: 1
     samples: [top_bb4l_alldilepflav]
 
-  "HH (251 GeV)":
+  hh_251gev:
     legend: "#it{HH} (251 GeV)"
     color: [176, 82, 74]
     is_signal: true
     signal_multiplier: 200
     samples: [bbWW_251, bbZZ_251, bbtt_251, bbZZ_llqq_251]
 
-  "HH (260 GeV)":
+  hh_260gev:
     legend: "#it{HH} (260 GeV)"
     color: [186, 102, 82]
     is_signal: true
     signal_multiplier: 200
     samples: [bbWW_260, bbZZ_260, bbtt_260, bbZZ_llqq_260]
 
-  "HH (300 GeV)":
+  hh_300gev:
     legend: "#it{HH} (300 GeV)"
     color: [196, 122, 90]
     is_signal: true
     signal_multiplier: 200
     samples: [bbWW_300, bbZZ_300, bbtt_300, bbZZ_llqq_300]
 
-  "HH (400 GeV)":
+  hh_400gev:
     legend: "#it{HH} (400 GeV)"
     color: [204, 142, 102]
     is_signal: true
     signal_multiplier: 200
     samples: [bbWW_400, bbZZ_400, bbtt_400, bbZZ_llqq_400]
 
-  "HH (500 GeV)":
+  hh_500gev:
     legend: "#it{HH} (500 GeV)"
     color: [198, 160, 122]
     is_signal: true
     signal_multiplier: 200
     samples: [bbWW_500, bbZZ_500, bbtt_500, bbZZ_llqq_500]
 
-  "HH (600 GeV)":
+  hh_600gev:
     legend: "#it{HH} (600 GeV)"
     color: [180, 176, 150]
     is_signal: true
     signal_multiplier: 200
     samples: [bbWW_600, bbZZ_600, bbtt_600, bbZZ_llqq_600]
 
-  "HH (800 GeV)":
+  hh_800gev:
     legend: "#it{HH} (800 GeV)"
     color: [158, 168, 168]
     is_signal: true
     signal_multiplier: 200
     samples: [bbWW_800, bbZZ_800, bbtt_800, bbZZ_llqq_800]
 
-  "HH (1000 GeV)":
+  hh_1000gev:
     legend: "#it{HH} (1000 GeV)"
     color: [158, 168, 168]
     is_signal: true
     signal_multiplier: 200
     samples: [bbWW_1000, bbZZ_1000, bbtt_1000, bbZZ_llqq_1000]
 
-  "HH (1500 GeV)":
+  hh_1500gev:
     legend: "#it{HH} (1500 GeV)"
     color: [108, 146, 196]
     is_signal: true
     signal_multiplier: 200
     samples: [bbWW_1500, bbZZ_1500, bbtt_1500, bbZZ_llqq_1500]
 
-  "HH (3000 GeV)":
+  hh_3000gev:
     legend: "#it{HH} (3000 GeV)"
     color: [90, 130, 202]
     is_signal: true
@@ -615,7 +615,7 @@ stacks:
     samples: [bbWW_3000, bbZZ_3000, bbtt_3000, bbZZ_llqq_3000]
 
   # Example of a cross-mass grouping enabled by the separated sample definitions:
-  # "HH bbWW (all masses)":
+  # hh_bbWW_allmass:
   #   legend: "#it{HH} (bbWW)"
   #   color: [200, 100, 80]
   #   is_signal: true
@@ -757,7 +757,7 @@ stacks:
     color: [80, 80, 255]
     samples:
       - Wenu+jet_Bfilt
-      - Wenu+jet_CFilterBveto
+      - Wenu+jet_CfiltBveto
       - Wenu+jet_CvetoBveto
       - Wmunu+jet_Bfilt
       - Wmunu+jet_CfiltBveto

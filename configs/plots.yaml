@@ -6,11 +6,11 @@
 # Any field not specified inherits from `defaults`.
 
 defaults:
-  toGeV: false
+  toGeV: true
   units: ""
-  nBins: 50
+  nBins: 30
   x-min: 0
-  x-max: 1
+  x-max: 1000
 
 variables:
 

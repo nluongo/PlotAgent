@@ -52,14 +52,16 @@ makePlot:
   weight_factor: "weight_total_NOSYS"
 
   signalName: [
-    "HH (251 GeV)", 
-    "HH (260 GeV)",
-    "HH (300 GeV)", 
-    "HH (400 GeV)", 
-    "HH (500 GeV)", 
-    "HH (600 GeV)", 
-    "HH (800 GeV)", 
-    "HH (1000 GeV)",
+    "hh_251gev",
+    "hh_260gev",
+    "hh_300gev",
+    "hh_400gev",
+    "hh_500gev",
+    "hh_600gev",
+    "hh_800gev",
+    "hh_1000gev",
+    "hh_1500gev",
+    "hh_3000gev",
   ]
   samplesToStack_run2: [
     "ttbar_dilep",
