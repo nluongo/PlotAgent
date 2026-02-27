@@ -1,4 +1,4 @@
-# configs/plots.yaml
+# configs/variables.yaml
 # Authoritative definitions for all 1D histogram variables.
 # Replaces: PlottingDict() from histoDict.py and customHists in config.yaml.
 #

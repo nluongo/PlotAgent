@@ -59,7 +59,7 @@ def _deep_merge(base, override):
 def _apply_defaults(section, defaults):
     """
     For each entry in `section` (a dict of dicts), fill missing keys from `defaults`.
-    Used to apply plots.yaml defaults to each variable definition.
+    Used to apply variables.yaml defaults to each variable definition.
     """
     out = {}
     for name, spec in section.items():
@@ -89,7 +89,7 @@ def load_split_configs(include_paths, base_dir):
 
     merged = substitute_vars(merged)
 
-    # Apply per-variable defaults from plots.yaml
+    # Apply per-variable defaults from variables.yaml
     if 'variables' in merged and 'defaults' in merged:
         plot_defaults = merged.pop('defaults')
         merged['variables'] = _apply_defaults(merged['variables'], plot_defaults)
@@ -132,6 +132,8 @@ def load_config(config_path):
     top['_campaigns_config'] = aux.get('campaigns', {})
     top['_data_campaigns_config'] = aux.get('data_campaigns', {})
     top['_luminosity_config'] = aux.get('luminosity', {})
+    if 'plots' in aux:
+        top['_plots_config'] = aux['plots']
 
     return raw_config
 

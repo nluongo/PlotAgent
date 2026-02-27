@@ -69,11 +69,11 @@ Custom selections and histograms can also be defined directly in the YAML config
 
 ## Long-Term Vision: AI Agent Workflow
 
-The project is being refactored so that all sample definitions, histogram parameters, selections, colors, and legends live in YAML config files (`configs/samples.yaml`, `configs/plots.yaml`, `configs/selections.yaml`) rather than hard-coded Python. This enables an AI agent workflow:
+The project is being refactored so that all sample definitions, histogram parameters, selections, colors, and legends live in YAML config files (`configs/samples.yaml`, `configs/variables.yaml`, `configs/selections.yaml`) rather than hard-coded Python. This enables an AI agent workflow:
 
 1. Agent runs `makePlot.py` to generate output plots
 2. Agent reads the output images and identifies issues (e.g., data outside axis bounds, overlapping labels)
-3. Agent modifies the relevant YAML config entry (e.g., increases `x-max` in `plots.yaml`)
+3. Agent modifies the relevant YAML config entry (e.g., increases `x-max` in `variables.yaml`)
 4. Agent re-runs `makePlot.py`; only plots whose config hash changed are regenerated (others are skipped)
 
 The refactoring is incremental — `histoDict.py` and `PlottingList.py` remain as fallbacks while YAML files are being populated.

@@ -1,7 +1,7 @@
 makePlot:
   includes:
     - "configs/samples.yaml"
-    - "configs/plots.yaml"
+    - "configs/variables.yaml"
     - "configs/selections.yaml"
 
   user_name: "user.adanders"
