@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "plot-agent": {
+      "command": "python3",
+      "args": ["plot_agent_server.py"]
+    }
+  }
+}
