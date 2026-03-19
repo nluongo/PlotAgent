@@ -2,6 +2,7 @@ makePlot:
   includes:
     - "configs/samples.yaml"
     - "configs/variables.yaml"
+    - "configs/plots.yaml"
     - "configs/selections.yaml"
 
   user_name: "user.adanders"
@@ -9,7 +10,7 @@ makePlot:
   BLIND_THRESHOLD: 0.03
 
   fastframes_input: True
-  sampleslist_path_Run2: "./Run2_sampleslist_v8.json"
+  sampleslist_path_Run2: "./samples.json"
   sampleslist_path_Run3: "./Run3_sampleslist_v8.json"
 
   input_path_run2: "/eos/atlas/atlascerngroupdisk/phys-higp/TauLep/HHbbll/NTUP_forbbllteam_v03/Run2/merged_weights/"

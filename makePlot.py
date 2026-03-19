@@ -198,23 +198,6 @@ def main1D(config={},
                    noPlots=False,
                    runs="2"):
     
-    if config["ttbar_reweighting_file_Run2"] or config["ttbar_reweighting_file_Run3"]:
-        apply_ttbar_reweighting = True
-    else:
-        apply_ttbar_reweighting = False
-
-    if config["do_ttbar_reweighting_calc"] and apply_ttbar_reweighting:
-        print("ERROR: Currently the data ttbar reweighting calculation cannot be run when an data ttbar reweighting file is provided. Please remove the file from the config.")
-        return 0
-
-    if config["do_ttbar_reweighting_calc"] or apply_ttbar_reweighting:
-        nJets = 15
-
-    if config["do_ttbar_reweighting_calc"] and (mcOnly or not yields):
-        print("WARNING: Data ttbar reweighting cannot run in MC only mode or with yields enabled. Forcing yields and disabling MC only mode.")
-        yields = True
-        mcOnly = False
-
     user_name = config["user_name"]
 
     run2_path = config["input_path_run2"]
@@ -402,13 +385,6 @@ def main1D(config={},
     MC.set_sampleSignalNames(config["signalName"])
     MC.set_doSignal(dosignal)
 
-    if apply_ttbar_reweighting:
-        print("Loading data ttbar reweighting file...")
-        if runs == "2":
-            MC.setup_ttbar_weights(config["ttbar_reweighting_file_Run2"], nJets=nJets)
-        elif runs == "3":
-            MC.setup_ttbar_weights(config["ttbar_reweighting_file_Run3"], nJets=nJets)
-
     mc = {}
 
     for run_num, run_mc in samples_to_stack.items():
@@ -538,8 +514,6 @@ def main1D(config={},
                     if do_cut:
                         mc[s].apply_cutPerSample(cutPerSampleDict[cut]['cuts'][0])
                 mc[s].apply_selection(selection, selectionDict[selection]['cuts'][0])
-                if mc[s].hist_name.startswith("ttbar") and apply_ttbar_reweighting:
-                    mc[s].define_ttbar_weight(selection, 'weight')
                 # Get histogram ptrs for MC samples
                 if not skip_this_plot:
                     mc[s].get_histogram_ptr(histo_name,
@@ -551,10 +525,7 @@ def main1D(config={},
 
                 # Get Yields ptrs for MC samples
                 if yields:
-                    if not apply_ttbar_reweighting or not mc[s].hist_name.startswith("ttbar"):
-                        mc[s].set_sample_yields(selection)
-                    elif apply_ttbar_reweighting and mc[s].hist_name.startswith("ttbar"):
-                        mc[s].set_sample_yields(selection, weight="weight_wTTbarWeight")
+                    mc[s].set_sample_yields(selection)
 
             if not mcOnly:
                 if config["fastframes_input"]:
@@ -581,121 +552,9 @@ def main1D(config={},
                             data[campaign].set_sample_yields(selection)
         print_progress_bar(i+1, len(plots_by_selection), prefix='Creating histograms:', suffix='Complete\n', length=50)
 
-    if config["do_ttbar_reweighting_calc"] and not mcOnly:
-        print("Queueing data ttbar reweighting...")
-        Sample.setup_ttbar_reweighting_calc()
-        # Create histogram model for each nJet bin
-        # nbins = [50] * nJets  # Set the same number of bins for all nJets
-        # Dict where key is number of jets and value is a list of bin edges for HT2
-        if runs == "2":
-            ttbar_reweighting_binEdges = {
-                2 : array('d', [0, 33e3, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 440e3, 490e3, 533e3, 650e3, 1999e3]),
-                3 : array('d', [0, 33e3, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 575e3, 700e3, 1999e3]),
-                4 : array('d', [0, 50e3, 100e3, 150e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 600e3, 700e3, 850e3, 1999e3]),
-                5 : array('d', [0, 70e3, 120e3, 160e3, 200e3, 250e3, 300e3, 400e3, 525e3, 650e3, 775e3, 1999e3]),
-                6 : array('d', [0, 60e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 550e3, 600e3, 650e3, 750e3, 900e3, 1999e3]),
-                7 : array('d', [0, 90e3, 150e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 550e3, 600e3, 650e3, 700e3, 750e3, 850e3, 1999e3]),
-                8 : array('d', [0, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 550e3, 650e3, 800e3, 1999e3]),
-                9 : array('d', [0, 66e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 550e3, 650e3, 800e3, 1999e3]),
-                10: array('d', [0, 150e3, 300e3, 400e3, 650e3, 1999e3]),
-                11: array('d', [0, 150e3, 266e3, 400e3, 600e3, 1999e3]),
-                12: array('d', [0, 200e3, 400e3, 1999e3]),
-                13: array('d', [0, 200e3, 400e3, 1999e3]),
-                14: array('d', [0, 200e3, 400e3, 1999e3]),
-                15: array('d', [0, 200e3, 400e3, 1999e3]),
-            }
-        elif runs == "3":
-            ttbar_reweighting_binEdges = {
-                # 2 : array('d', [0, 33e3, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 433e3, 466e3, 500e3, 533e3, 566e3, 600e3, 650e3, 700e3, 750e3, 800e3, 900e3, 1999e3]),
-                # 3 : array('d', [0, 33e3, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 433e3, 466e3, 500e3, 533e3, 566e3, 600e3, 650e3, 700e3, 750e3, 800e3, 850e3, 900e3, 950e3, 1000e3, 1999e3]),
-                # 4 : array('d', [0, 33e3, 66e3, 100e3, 150e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 600e3, 700e3, 800e3, 900e3, 1999e3]),
-                # 5 : array('d', [0, 50e3, 100e3, 150e3, 200e3, 250e3, 300e3, 400e3, 525e3, 650e3, 775e3, 800e3, 1999e3]),
-                # 6 : array('d', [0, 33e3, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 433e3, 466e3, 500e3, 533e3, 566e3, 600e3, 650e3, 700e3, 750e3, 800e3, 900e3, 1075e3, 1999e3]),
-                # 7 : array('d', [0, 33e3, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 433e3, 466e3, 500e3, 533e3, 566e3, 600e3, 633e3, 666e3, 700e3, 733e3, 766e3, 800e3, 900e3, 1999e3]),
-                # 8 : array('d', [0, 33e3, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 433e3, 466e3, 500e3, 533e3, 566e3, 600e3, 700e3, 800e3, 900e3, 1999e3]),
-                # 9 : array('d', [0, 33e3, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 433e3, 466e3, 500e3, 533e3, 566e3, 600e3, 700e3, 800e3, 900e3, 1999e3]),
-                # 10: array('d', [0, 100e3, 200e3, 300e3, 400e3, 600e3, 800e3, 1999e3]),
-                # 11: array('d', [0, 100e3, 250e3, 400e3, 550e3, 700e3, 1999e3]),
-                # 12: array('d', [0, 100e3, 250e3, 400e3, 550e3, 1999e3]),
-                2 : array('d', [0, 33e3, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 440e3, 490e3, 600e3, 1999e3]),
-                3 : array('d', [0, 33e3, 66e3, 100e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 625e3, 1999e3]),
-                4 : array('d', [0, 50e3, 100e3, 150e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 550e3, 700e3, 1999e3]),
-                5 : array('d', [0, 70e3, 120e3, 160e3, 200e3, 250e3, 300e3, 400e3, 525e3, 650e3, 775e3, 1999e3]),
-                6 : array('d', [0, 90e3, 133e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 550e3, 600e3, 800e3, 1999e3]),
-                7 : array('d', [0, 150e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 550e3, 600e3, 650e3, 700e3, 850e3, 1999e3]),
-                8 : array('d', [0, 125e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 550e3, 650e3, 800e3, 1999e3]),
-                9 : array('d', [0, 110e3, 166e3, 200e3, 233e3, 266e3, 300e3, 333e3, 366e3, 400e3, 450e3, 500e3, 550e3, 650e3, 800e3, 1999e3]),
-                10: array('d', [0, 150e3, 300e3, 400e3, 650e3, 1999e3]),
-                11: array('d', [0, 150e3, 266e3, 400e3, 600e3, 1999e3]),
-                12: array('d', [0, 200e3, 400e3, 1999e3]),
-                13: array('d', [0, 200e3, 400e3, 1999e3]),
-                14: array('d', [0, 200e3, 400e3, 1999e3]),
-                15: array('d', [0, 200e3, 400e3, 1999e3]),
-            }
-        hist_models = {}
-        for i, njet in enumerate(range(2, nJets + 1)):
-            hist_models[njet] = r.RDF.TH1DModel(f"hist_HT2_ttbar_CR_njet_{njet}",
-                                                        f"hist_HT2_ttbar_CR_njet_{njet}",
-                                                        len(ttbar_reweighting_binEdges[njet]) - 1,
-                                                        ttbar_reweighting_binEdges[njet])
-            # hist_models[njet] = r.RDF.TH1DModel(f"hist_HT2_ttbar_CR_njet_{njet}",
-            #                                             f"hist_HT2_ttbar_CR_njet_{njet}",
-            #                                             nbins[i],
-            #                                             0,
-            #                                             1999e3)
-        for s in mc:
-            if not mc[s].hist_name.startswith("HH"):
-                mc[s].queue_ttbar_reweighting_yields(hist_models, "weight", nJets=nJets)
-        if config["fastframes_input"]:
-            for campaign in data:
-                data[campaign].queue_ttbar_reweighting_yields(hist_models, "weight", nJets=nJets)
-        else:
-            for campaign in data_campaigns:
-                data[campaign].queue_ttbar_reweighting_yields(hist_models, "weight", nJets=nJets)
-        print("All samples queued!")
-    elif mcOnly:
-        print("Data ttbar reweighting cannot run in MC only mode. Skipping...")
-
-    # Temporary to check ttbar_weight: Creating histogram ptrs for ttbar weight in ttbar samples
-    if apply_ttbar_reweighting:
-        ttbar_w_hists_ptrs = []
-        for s in mc:
-            if mc[s].hist_name.startswith("ttbar"):
-                hist_model = r.RDF.TH1DModel(f"ttbar_weight_{s}",
-                                             f"ttbar_weight_{s}",
-                                             150,
-                                             0.5,
-                                             3.5)
-                ttbar_w_hists_ptrs.append(mc[s].df["preselection"].Histo1D(hist_model, "ttbar_weight"))
-                Sample.graphs.append(ttbar_w_hists_ptrs[-1])
-    #####
-
     print("Running graphs...")
     Sample.runGraphs()
     print("Completed!")
-
-    # Temporary to check ttbar_weight: evaluating and saving ttbar weight histograms
-    if apply_ttbar_reweighting:
-        i = 0
-        for s in mc:
-            if mc[s].hist_name.startswith("ttbar"):
-                if i == 0:
-                    ttbar_weight_hist = ttbar_w_hists_ptrs[i].GetValue().Clone("ttbar_weight_hist")
-                else:
-                    ttbar_weight_hist.Add(ttbar_w_hists_ptrs[i].GetValue())
-                i += 1
-        ttbar_weight_hist.SetName("ttbar_weight_hist")
-        ttbar_weight_hist.SetTitle("ttbar weight histogram")
-        ttbar_weight_hist.GetXaxis().SetTitle("ttbar weight")
-        ttbar_weight_hist.GetYaxis().SetTitle("Entries")
-        ttbar_weight_hist.GetXaxis().SetTitleOffset(1.2)
-        ttbar_weight_hist.GetYaxis().SetTitleOffset(1.2)
-        ttbar_weight_hist.GetXaxis().SetLabelFont(43)
-        ttbar_weight_hist.GetXaxis().SetLabelSize(25)
-        canvus = r.TCanvas("ttbar_weight_canvas", "ttbar_weight_canvas", 800, 600)
-        ttbar_weight_hist.Draw("HIST")
-        canvus.SaveAs(output_path + "ttbar_weight_hist.png") 
-    #####
 
     # Create the canvas
     canv =  r.TCanvas("canvas","canvas",800,600)
@@ -910,24 +769,6 @@ def main1D(config={},
     if '_stacks_config' in config:
         _save_plot_hashes(output_path, stored_hashes)
 
-    if config["do_ttbar_reweighting_calc"] and not mcOnly:
-        print("Running data ttbar reweighting...")
-        Sample.set_mc_yield_wo_ttbar(MC.mc_yield_wo_ttbar)
-        Sample.calc_ttbar_reweighting_normalization()
-        if config["fastframes_input"]:
-            for campaign in data:
-                data[campaign].eval_ttbar_reweighting_histogram(is_ttbar=False, is_mc=False)
-        else:
-            for campaign in data_campaigns:
-                data[campaign].eval_ttbar_reweighting_histogram(is_ttbar=False, is_mc=False)
-        for s in mc:
-            if not mc[s].hist_name.startswith("HH"):
-                if mc[s].hist_name.startswith("ttbar"):
-                    mc[s].eval_ttbar_reweighting_histogram(is_ttbar=True, is_mc=True)
-                else:
-                    mc[s].eval_ttbar_reweighting_histogram(is_ttbar=False, is_mc=True)
-        Sample.evaluate_ttbar_reweighting(runs)\
-    
     if yields:
         Sample.write_yields_tex(MC.signal_map, MC.histomap, blind= not UNBLIND)
         Sample.write_yields_txt(blind= not UNBLIND)
@@ -950,6 +791,9 @@ def argument_parser():
     parser.add_argument("-UB","--UNBLIND",help="",action="store_true",default=False)
     parser.add_argument('--dump-plots', '-dp', type=str, default=None, metavar='FILE',
         help='Expand the plot matrix into individual plot definitions and write to FILE, then exit')
+    parser.add_argument('--plots-file', '-pf', type=str, default=None, metavar='FILE',
+        help='Load per-plot definitions from FILE (YAML with top-level `plots:` key), '
+             'overriding configs/plots.yaml and the selectionToPlot × histosToPlot matrix')
     return parser.parse_args()
 
 if __name__ == "__main__":
@@ -976,6 +820,13 @@ if __name__ == "__main__":
     if options.dump_plots:
         _dump_individual_plots(config, options.dump_plots)
         sys.exit(0)
+
+    if options.plots_file:
+        with open(options.plots_file) as _pf:
+            _plots_data = yaml.safe_load(_pf)
+        if not _plots_data or 'plots' not in _plots_data:
+            raise ValueError(f"--plots-file {options.plots_file!r} must contain a top-level 'plots:' key")
+        config['_plots_config'] = _plots_data['plots']
 
     output_path = config["output_path"]+f"/run{options.runs}/"
     # Input and output directories
